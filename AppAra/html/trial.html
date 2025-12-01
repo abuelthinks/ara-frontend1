@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Information Form</title>
+    <link rel="stylesheet" href="../css/trial.css">
+</head>
+<body>
+    <form id="personalForm" action="../trial-data.php" method="POST">
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <br>
+        <div>
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required>
+        </div>
+        <br>
+        <div>
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="preview" class="preview">
+        <h3>Preview:</h3>
+        <p>Name: <span id="previewName"></span></p>
+        <p>Age: <span id="previewAge"></span></p>
+        <p>Gender: <span id="previewGender"></span></p>
+    </div>
+
+    <script src="../js/trial.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Specialist Dashboard - Ara</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../css/specialist-dashboard.css">
+</head>
+<body>
+    <header class="header">
+        <img src="../images/AraLogo.png" alt="Ara Logo" class="logo">
+        <div class="user-info">
+            <span><i class="fas fa-user-circle"></i><span id="specialistEmail"></span></span>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>Logout
+            </button>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <section class="welcome-section">
+            <h1>Welcome, Specialist</h1>
+            <p>Manage your assessments and track student progress</p>
+        </section>
+
+        <div class="actions-grid">
+            <div class="action-card">
+                <i class="fas fa-clipboard-list"></i>
+                <h3>Assessment</h3>
+                <p>Create and manage student assessments</p>
+                <button class="action-btn" onclick="location.href='specialist-assessment.html'">
+                    <i class="fas fa-arrow-right"></i>Go to Assessment
+                </button>
+            </div>
+
+            <div class="action-card">
+                <i class="fas fa-chart-line"></i>
+                <h3>Progress</h3>
+                <p>Track and analyze student progress</p>
+                <button class="action-btn" onclick="location.href='specialist-progress.html'">
+                    <i class="fas fa-arrow-right"></i>View Progress
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/specialist-dashboard.js"></script>
+</body>
+</html>
+

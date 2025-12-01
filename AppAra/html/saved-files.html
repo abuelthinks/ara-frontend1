@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saved Files</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../css/saved-files.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Saved Files</h1>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+
+        <button class="action-btn" onclick="window.location.href='parent-homepage.html'">
+            <i class="fas fa-arrow-left"></i> Back to Homepage
+        </button>
+
+        <div class="reports-container" id="reportsContainer">
+            <!-- Reports will be loaded here dynamically -->
+        </div>
+    </div>
+
+    <script src="../js/saved-files.js"></script>
+</body>
+</html>
+

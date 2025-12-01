@@ -1,0 +1,142 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #e9f5ff;
+}
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+h2, h3, h4, h5 {
+    color: #1a73e8;
+    margin-bottom: 10px;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+label {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+input[type="text"],
+input[type="date"],
+input[type="tel"],
+input[type="email"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 5px;
+    width: 100%;
+}
+.section {
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.back-button {
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+.back-button:hover {
+    background-color: #1557b0;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+th {
+    background-color: #f0f8ff;
+}
+table input[type="text"] {
+    width: 95%;
+}
+.tooltip {
+    margin-left: 5px;
+    color: #888;
+    cursor: pointer;
+}
+.add-row-btn {
+    background-color: #34a853;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+.add-row-btn:hover {
+    background-color: #2d8e47;
+}
+.goal-input, .objective-input, .timeframe-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+#activitiesTable {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+#activitiesTable th,
+#activitiesTable td {
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+#activitiesTable th:nth-child(1) { width: 20%; }
+#activitiesTable th:nth-child(2) { width: 35%; }
+#activitiesTable th:nth-child(3) { width: 30%; }
+#activitiesTable th:nth-child(4) { width: 15%; }
+.goal-input,
+.activity-input,
+.frequency-input {
+    width: 95%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+.remove-row-btn {
+    padding: 6px 12px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+.remove-row-btn:hover {
+    background-color: #c82333;
+}
+

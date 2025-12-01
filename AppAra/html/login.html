@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARA</title>
+    <link rel="stylesheet" href="../css/login.css">
+</head>
+<body>
+    <div class="shapes">
+    </div>
+    
+    <div class="login-container">
+        <img src="../images/AraLogo.png" 
+             alt="Ara Logo" 
+             class="logo">
+        <h2>Welcome to ARA</h2>
+        <!-- <p class="welcome-text">Automated Reporting Platform</p> -->
+        <form id="loginForm" onsubmit="return validateLogin(event)">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+        <div id="errorMessage" class="error-message"></div>
+    </div>
+
+    <script src="../js/login.js"></script>
+</body>
+</html>
+

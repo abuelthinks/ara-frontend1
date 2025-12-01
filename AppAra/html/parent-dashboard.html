@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Input Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../css/parent-dashboard.css">
+</head>
+<body>
+    <div class="page-container">
+        <div class="dashboard-header">
+            <div class="header-left">
+                <i class="fas fa-columns dashboard-icon"></i>
+                <h1>Parent Dashboard</h1>
+            </div>
+            
+            <div class="header-right">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <span>Welcome, Parent</span>
+                </div>
+                
+                <button class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <div class="progress-bar">
+                <div class="progress" id="formProgress"></div>
+            </div>
+            
+            <form id="assessmentForm" onsubmit="handleFormSubmission(event)">
+                <!-- SECTION A. BACKGROUND INFORMATION -->
+                <div class="form-section">
+                    <h3><i class="fas fa-user"></i> Section A: Background Information</h3>
+                    
+                    <div class="form-group">
+                        <label>Child's First Name:</label>
+                        <input type="text" name="childFirstName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Child's Last Name:</label>
+                        <input type="text" name="childLastName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Date of Birth:</label>
+                        <input type="date" name="dob" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Gender:</label>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" name="gender" value="Male" id="genderMale">
+                            <label for="genderMale">Male</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" name="gender" value="Female" id="genderFemale">
+                            <label for="genderFemale">Female</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" name="gender" value="Prefer not to say" id="genderPreferNot">
+                            <label for="genderPreferNot">Prefer not to say</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Grade/Level:</label>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="gradeNurseryEarly" id="gradeNurseryEarly">
+                            <label for="gradeNurseryEarly">Nursery/Early Years</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="gradePreK" id="gradePreK">
+                            <label for="gradePreK">Pre-K/Kinder</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="gradePrimary" id="gradePrimary">
+                            <label for="gradePrimary">Primary</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="gradeNotYetSchool" id="gradeNotYetSchool">
+                            <label for="gradeNotYetSchool">Not yet in school</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Parent/Guardian Name:</label>
+                        <input type="text" name="parentName">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Phone:</label>
+                        <input type="text" name="phone">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email:</label>
+                        <input type="email" name="email">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Primary Language(s):</label>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="langEnglish" id="langEnglish">
+                            <label for="langEnglish">English</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="langArabic" id="langArabic">
+                            <label for="langArabic">Arabic</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="langTagalog" id="langTagalog">
+                            <label for="langTagalog">Tagalog</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="langUrdu" id="langUrdu">
+                            <label for="langUrdu">Urdu</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="langHindi" id="langHindi">
+                            <label for="langHindi">Hindi</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="langOther" id="langOther">
+                            <label for="langOther">Other:</label>
+                            <input type="text" name="langOtherDetail" placeholder="Please specify">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h4>Medical Alerts/Medications</h4>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="medicalNone" id="medicalNone">
+                            <label for="medicalNone">None</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="medicalYes" id="medicalYes">
+                            <label for="medicalYes">Yes (specify):</label>
+                            <input type="text" name="medicalDetails" placeholder="Medical alerts/medications">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h4>Optional – Known Conditions</h4>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="autism" id="autism">
+                            <label for="autism">Autism</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="speechDelay" id="speechDelay">
+                            <label for="speechDelay">Speech Delay</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="adhd" id="adhd">
+                            <label for="adhd">ADHD</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="learningDifficulty" id="learningDifficulty">
+                            <label for="learningDifficulty">Learning Difficulty</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="developmentalDelay" id="developmentalDelay">
+                            <label for="developmentalDelay">Developmental Delay</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="sensoryDifficulty" id="sensoryDifficulty">
+                            <label for="sensoryDifficulty">Sensory Difficulty</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="otherCondition" id="otherCondition">
+                            <label for="otherCondition">Other:</label>
+                            <input type="text" name="otherConditionDetail" placeholder="Please specify">
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="conditionNotSure" id="conditionNotSure">
+                            <label for="conditionNotSure">Not sure</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION B. DEVELOPMENTAL HISTORY -->
+                <div class="form-section">
+                    <h3><i class="fas fa-child"></i> Section B: Developmental History</h3>
+
+                    <div class="form-group">
+                        <h4>Milestones</h4>
+                        <div class="sub-item">
+                            <label>Sitting:</label>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" name="sitting" value="Early" id="sittingEarly">
+                                <label for="sittingEarly">Early</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" name="sitting" value="Typical" id="sittingTypical">
+                                <label for="sittingTypical">Typical</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" name="sitting" value="Late" id="sittingLate">
+                                <label for="sittingLate">Late</label>
+                            </div>
+                        </div>
+
+                        <div class="sub-item">
+                            <label>Crawling:</label>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" name="crawling" value="Early" id="crawlingEarly">
+                                <label for="crawlingEarly">Early</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" name="crawling" value="Typical" id="crawlingTypical">
+                                <label for="crawlingTypical">Typical</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" name="crawling" value="Late" id="crawlingLate">
+                                <label for="crawlingLate">Late</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" name="crawling" value="Did not crawl" id="crawlingNone">
+                                <label for="crawlingNone">Did not crawl</label>
+                            </div>
+                        </div>
+
+                        <div class="sub-item">
+                            <label>Walking:</label>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" name="walking" value="Early" id="walkingEarly">
+                                <label for="walkingEarly">Early</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" name="walking" value="Typical" id="walkingTypical">
+                                <label for="walkingTypical">Typical</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" name="walking" value="Late" id="walkingLate">
+                                <label for="walkingLate">Late</label>
+                            </div>
+                        </div>
+
+                        <div class="sub-item">
+                            <label>First Words:</label>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" name="firstWords" value="Early" id="firstWordsEarly">
+                                <label for="firstWordsEarly">Early</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" name="firstWords" value="Typical" id="firstWordsTypical">
+                                <label for="firstWordsTypical">Typical</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" name="firstWords" value="Late" id="firstWordsLate">
+                                <label for="firstWordsLate">Late</label>
+                            </div>
+                        </div>
+
+                        <div class="sub-item">
+                            <label>Phrases/Sentences:</label>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" name="phrases" value="Early" id="phrasesEarly">
+                                <label for="phrasesEarly">Early</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" name="phrases" value="Typical" id="phrasesTypical">
+                                <label for="phrasesTypical">Typical</label>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="radio" name="phrases" value="Late" id="phrasesLate">
+                                <label for="phrasesLate">Late</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h4>Previous Services</h4>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="prevSchooling" id="prevSchooling">
+                            <label for="prevSchooling">Schooling before</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="prevSpeechTherapy" id="prevSpeechTherapy">
+                            <label for="prevSpeechTherapy">Speech Therapy</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="prevOccupationalTherapy" id="prevOccupationalTherapy">
+                            <label for="prevOccupationalTherapy">Occupational Therapy</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="prevBehavioralTherapy" id="prevBehavioralTherapy">
+                            <label for="prevBehavioralTherapy">Behavioral Therapy</label>
+                        </div>
+
+                        <div class="radio-group-container">
+                            <label>IEP before:</label>
+                            <div class="radio-options">
+                                <label class="radio-label">
+                                    <input type="radio" name="iepBefore" value="Yes">
+                                    Yes
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="iepBefore" value="No">
+                                    No
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h4>Areas of Concern</h4>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="concernCommunication" id="concernCommunication">
+                            <label for="concernCommunication">Communication</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="concernLearning" id="concernLearning">
+                            <label for="concernLearning">Learning</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="concernMotor" id="concernMotor">
+                            <label for="concernMotor">Motor Skills</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="concernSocial" id="concernSocial">
+                            <label for="concernSocial">Social</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="concernBehavior" id="concernBehavior">
+                            <label for="concernBehavior">Behavior</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="concernEmotions" id="concernEmotions">
+                            <label for="concernEmotions">Emotions</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="concernSensory" id="concernSensory">
+                            <label for="concernSensory">Sensory</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="concernDailyLiving" id="concernDailyLiving">
+                            <label for="concernDailyLiving">Daily Living</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="concernSafety" id="concernSafety">
+                            <label for="concernSafety">Safety</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="concernNotSure" id="concernNotSure">
+                            <label for="concernNotSure">Not sure</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION C. PARENT INPUT -->
+                <div class="form-section">
+                    <h3><i class="fas fa-comments-alt"></i> Section C: Parent Input</h3>
+
+                    <div class="form-group">
+                        <h4>Primary Concerns</h4>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="concernSpeech" id="concernSpeech">
+                            <label for="concernSpeech">Speech</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="concernBehaviorParent" id="concernBehaviorParent">
+                            <label for="concernBehaviorParent">Behavior</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="concernLearningParent" id="concernLearningParent">
+                            <label for="concernLearningParent">Learning</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="concernSocialParent" id="concernSocialParent">
+                            <label for="concernSocialParent">Social</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="concernSensoryParent" id="concernSensoryParent">
+                            <label for="concernSensoryParent">Sensory</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="concernMotorParent" id="concernMotorParent">
+                            <label for="concernMotorParent">Motor</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="concernEatingSleeping" id="concernEatingSleeping">
+                            <label for="concernEatingSleeping">Eating/Sleeping</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="concernSafetyParent" id="concernSafetyParent">
+                            <label for="concernSafetyParent">Safety</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="concernNotSureParent" id="concernNotSureParent">
+                            <label for="concernNotSureParent">Not sure</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h4>Goals for My Child</h4>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="goalCommunicateBetter" id="goalCommunicateBetter">
+                            <label for="goalCommunicateBetter">Communicate better</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="goalImproveBehavior" id="goalImproveBehavior">
+                            <label for="goalImproveBehavior">Improve behavior</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="goalLearnFaster" id="goalLearnFaster">
+                            <label for="goalLearnFaster">Learn faster</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="goalImproveSocial" id="goalImproveSocial">
+                            <label for="goalImproveSocial">Improve social skills</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="goalBeIndependent" id="goalBeIndependent">
+                            <label for="goalBeIndependent">Be independent</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="goalSchoolReadiness" id="goalSchoolReadiness">
+                            <label for="goalSchoolReadiness">School readiness</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="goalMotorImprovements" id="goalMotorImprovements">
+                            <label for="goalMotorImprovements">Motor improvements</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="goalOther" id="goalOther">
+                            <label for="goalOther">Other:</label>
+                            <input type="text" name="goalOtherDetail" placeholder="Please specify">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h4>Strategies at Home</h4>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="homeSchedules" id="homeSchedules">
+                            <label for="homeSchedules">Schedules</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="homeRoutines" id="homeRoutines">
+                            <label for="homeRoutines">Routines</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="homeVisualAids" id="homeVisualAids">
+                            <label for="homeVisualAids">Visual aids</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="homeRewards" id="homeRewards">
+                            <label for="homeRewards">Rewards</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="homeQuietTime" id="homeQuietTime">
+                            <label for="homeQuietTime">Quiet time</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="homeSensoryTools" id="homeSensoryTools">
+                            <label for="homeSensoryTools">Sensory tools</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="homeNotSure" id="homeNotSure">
+                            <label for="homeNotSure">Not sure</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="homeOther" id="homeOther">
+                            <label for="homeOther">Other:</label>
+                            <input type="text" name="homeOtherDetail" placeholder="Please specify">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION D. BEHAVIOR & SOCIAL INTERACTION -->
+                <div class="form-section">
+                    <h3><i class="fas fa-brain"></i> Section D: Behavior & Social Interaction</h3>
+
+                    <div class="form-group">
+                        <h4>Difficulties</h4>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="diffTransitions" id="diffTransitions">
+                            <label for="diffTransitions">Transitions</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="diffWaiting" id="diffWaiting">
+                            <label for="diffWaiting">Waiting</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="diffFocus" id="diffFocus">
+                            <label for="diffFocus">Focus</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="diffRules" id="diffRules">
+                            <label for="diffRules">Rules</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="diffPlayingWithOthers" id="diffPlayingWithOthers">
+                            <label for="diffPlayingWithOthers">Playing with others</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="diffSharing" id="diffSharing">
+                            <label for="diffSharing">Sharing</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="diffEmotions" id="diffEmotions">
+                            <label for="diffEmotions">Emotions</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="diffStayingCalm" id="diffStayingCalm">
+                            <label for="diffStayingCalm">Staying calm</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="diffNotSure" id="diffNotSure">
+                            <label for="diffNotSure">Not sure</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h4>Triggers</h4>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="triggerLoudSounds" id="triggerLoudSounds">
+                            <label for="triggerLoudSounds">Loud sounds</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="triggerLights" id="triggerLights">
+                            <label for="triggerLights">Lights</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="triggerBeingToldNo" id="triggerBeingToldNo">
+                            <label for="triggerBeingToldNo">Being told no</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="triggerChanges" id="triggerChanges">
+                            <label for="triggerChanges">Changes</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="triggerCrowds" id="triggerCrowds">
+                            <label for="triggerCrowds">Crowds</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="triggerSharing" id="triggerSharing">
+                            <label for="triggerSharing">Sharing</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="triggerNotSure" id="triggerNotSure">
+                            <label for="triggerNotSure">Not sure</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h4>Calming Strategies</h4>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="calmDeepBreathing" id="calmDeepBreathing">
+                            <label for="calmDeepBreathing">Deep breathing</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="calmSensoryTools" id="calmSensoryTools">
+                            <label for="calmSensoryTools">Sensory tools</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="calmQuietSpace" id="calmQuietSpace">
+                            <label for="calmQuietSpace">Quiet space</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="calmHugs" id="calmHugs">
+                            <label for="calmHugs">Hugs</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="calmDistraction" id="calmDistraction">
+                            <label for="calmDistraction">Distraction</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="calmTabletMusic" id="calmTabletMusic">
+                            <label for="calmTabletMusic">Tablet/music</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="calmNotSure" id="calmNotSure">
+                            <label for="calmNotSure">Not sure</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h4>Communication</h4>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="commWords" id="commWords">
+                            <label for="commWords">Words</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="commShortPhrases" id="commShortPhrases">
+                            <label for="commShortPhrases">Short phrases</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="commSentences" id="commSentences">
+                            <label for="commSentences">Sentences</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="commGestures" id="commGestures">
+                            <label for="commGestures">Gestures</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="commSounds" id="commSounds">
+                            <label for="commSounds">Sounds</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="commNotSpeaking" id="commNotSpeaking">
+                            <label for="commNotSpeaking">Not speaking</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h4>Social Interaction</h4>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="socialEyeContact" id="socialEyeContact">
+                            <label for="socialEyeContact">Eye contact</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="socialRespondsName" id="socialRespondsName">
+                            <label for="socialRespondsName">Responds to name</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="socialPlaysAlone" id="socialPlaysAlone">
+                            <label for="socialPlaysAlone">Plays alone</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="socialPlaysWithOthers" id="socialPlaysWithOthers">
+                            <label for="socialPlaysWithOthers">Plays with others</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="socialAvoidsInteraction" id="socialAvoidsInteraction">
+                            <label for="socialAvoidsInteraction">Avoids interaction</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="socialPrefersAdults" id="socialPrefersAdults">
+                            <label for="socialPrefersAdults">Prefers adults</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="socialOverwhelmedGroups" id="socialOverwhelmedGroups">
+                            <label for="socialOverwhelmedGroups">Overwhelmed in groups</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h4>Comfort Setting</h4>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="comfortStructured" id="comfortStructured">
+                            <label for="comfortStructured">Structured</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="comfortUnstructured" id="comfortUnstructured">
+                            <label for="comfortUnstructured">Unstructured</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="comfortOneOnOne" id="comfortOneOnOne">
+                            <label for="comfortOneOnOne">One-on-one</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="comfortSmallGroups" id="comfortSmallGroups">
+                            <label for="comfortSmallGroups">Small groups</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="comfortNotSure" id="comfortNotSure">
+                            <label for="comfortNotSure">Not sure</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION E. SENSORY & PHYSICAL NEEDS -->
+                <div class="form-section">
+                    <h3><i class="fas fa-hand-sparkles"></i> Section E: Sensory & Physical Needs</h3>
+
+                    <div class="form-group">
+                        <h4>Sensitivities</h4>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="sensSounds" id="sensSounds">
+                            <label for="sensSounds">Sounds</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="sensLights" id="sensLights">
+                            <label for="sensLights">Lights</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="sensTextures" id="sensTextures">
+                            <label for="sensTextures">Textures</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="sensFoodTextures" id="sensFoodTextures">
+                            <label for="sensFoodTextures">Food textures</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="sensCrowds" id="sensCrowds">
+                            <label for="sensCrowds">Crowds</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="sensMovement" id="sensMovement">
+                            <label for="sensMovement">Movement</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="sensWater" id="sensWater">
+                            <label for="sensWater">Water</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="sensTouch" id="sensTouch">
+                            <label for="sensTouch">Touch</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="sensSmells" id="sensSmells">
+                            <label for="sensSmells">Smells</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="sensNone" id="sensNone">
+                            <label for="sensNone">None</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h4>Motor Needs</h4>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="motorFineDifficulty" id="motorFineDifficulty">
+                            <label for="motorFineDifficulty">Fine motor difficulty</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="motorGrossDifficulty" id="motorGrossDifficulty">
+                            <label for="motorGrossDifficulty">Gross motor difficulty</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="motorWeakness" id="motorWeakness">
+                            <label for="motorWeakness">Weakness</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="motorEasilyTired" id="motorEasilyTired">
+                            <label for="motorEasilyTired">Easily tired</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="motorNone" id="motorNone">
+                            <label for="motorNone">None</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h4>Physical Accommodations Needed</h4>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" name="physicalAccomNeeded" value="No" id="physicalAccomNeededNo">
+                            <label for="physicalAccomNeededNo">No</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" name="physicalAccomNeeded" value="Yes" id="physicalAccomNeededYes">
+                            <label for="physicalAccomNeededYes">Yes →</label>
+                            <input type="text" name="physicalAccomNeededDetail" placeholder="Please specify">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION F. GOALS & EXPECTATIONS -->
+                <div class="form-section">
+                    <h3><i class="fas fa-bullseye"></i> Section F: Goals & Expectations</h3>
+
+                    <div class="form-group">
+                        <h4>Goals for This Year</h4>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="yearGoalAcademic" id="yearGoalAcademic">
+                            <label for="yearGoalAcademic">Academic</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="yearGoalSpeech" id="yearGoalSpeech">
+                            <label for="yearGoalSpeech">Speech</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="yearGoalSocial" id="yearGoalSocial">
+                            <label for="yearGoalSocial">Social</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="yearGoalEmotional" id="yearGoalEmotional">
+                            <label for="yearGoalEmotional">Emotional</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="yearGoalBehavior" id="yearGoalBehavior">
+                            <label for="yearGoalBehavior">Behavior</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="yearGoalIndependence" id="yearGoalIndependence">
+                            <label for="yearGoalIndependence">Independence</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="yearGoalMotor" id="yearGoalMotor">
+                            <label for="yearGoalMotor">Motor</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="yearGoalOther" id="yearGoalOther">
+                            <label for="yearGoalOther">Other:</label>
+                            <input type="text" name="yearGoalOtherDetail" placeholder="Please specify">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h4>Goals for Next 3–5 Years</h4>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="longGoalIndependence" id="longGoalIndependence">
+                            <label for="longGoalIndependence">Independence</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="longGoalCommunication" id="longGoalCommunication">
+                            <label for="longGoalCommunication">Communication</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="longGoalBehavior" id="longGoalBehavior">
+                            <label for="longGoalBehavior">Behavior</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="longGoalSchoolReadiness" id="longGoalSchoolReadiness">
+                            <label for="longGoalSchoolReadiness">School readiness</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="longGoalFriendships" id="longGoalFriendships">
+                            <label for="longGoalFriendships">Friendships</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="longGoalLearning" id="longGoalLearning">
+                            <label for="longGoalLearning">Learning</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="longGoalNotSure" id="longGoalNotSure">
+                            <label for="longGoalNotSure">Not sure</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="longGoalOther" id="longGoalOther">
+                            <label for="longGoalOther">Other:</label>
+                            <input type="text" name="longGoalOtherDetail" placeholder="Please specify">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION G. HOME ENVIRONMENT & SUPPORT -->
+                <div class="form-section">
+                    <h3><i class="fas fa-home"></i> Section G: Home Environment & Support</h3>
+
+                    <div class="form-group">
+                        <h4>Home Strategies</h4>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="homeStratSchedules" id="homeStratSchedules">
+                            <label for="homeStratSchedules">Schedules</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="homeStratRewards" id="homeStratRewards">
+                            <label for="homeStratRewards">Rewards</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="homeStratVisualSupports" id="homeStratVisualSupports">
+                            <label for="homeStratVisualSupports">Visual supports</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="homeStratRules" id="homeStratRules">
+                            <label for="homeStratRules">Rules</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="homeStratCalmCorner" id="homeStratCalmCorner">
+                            <label for="homeStratCalmCorner">Calm corner</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="homeStratSensoryPlay" id="homeStratSensoryPlay">
+                            <label for="homeStratSensoryPlay">Sensory play</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="homeStratOutdoorTime" id="homeStratOutdoorTime">
+                            <label for="homeStratOutdoorTime">Outdoor time</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="homeStratNotSure" id="homeStratNotSure">
+                            <label for="homeStratNotSure">Not sure</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h4>Support Needed</h4>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="supportHomeActivities" id="supportHomeActivities">
+                            <label for="supportHomeActivities">Home activities</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="supportBehaviorGuidance" id="supportBehaviorGuidance">
+                            <label for="supportBehaviorGuidance">Behavior guidance</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="supportSpeechGuidance" id="supportSpeechGuidance">
+                            <label for="supportSpeechGuidance">Speech guidance</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="supportRoutinesHelp" id="supportRoutinesHelp">
+                            <label for="supportRoutinesHelp">Routines help</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="supportSocialSkills" id="supportSocialSkills">
+                            <label for="supportSocialSkills">Social skills support</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="supportParentSupport" id="supportParentSupport">
+                            <label for="supportParentSupport">Parent support</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="supportOther" id="supportOther">
+                            <label for="supportOther">Other:</label>
+                            <input type="text" name="supportOtherDetail" placeholder="Please specify">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION H. CHILD STRENGTHS -->
+                <div class="form-section">
+                    <h3><i class="fas fa-smile"></i> Section H: Child Strengths</h3>
+
+                    <div class="form-group">
+                        <h4>My Child's Strengths</h4>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="strengthFriendly" id="strengthFriendly">
+                            <label for="strengthFriendly">Friendly</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="strengthCurious" id="strengthCurious">
+                            <label for="strengthCurious">Curious</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="strengthGoodMemory" id="strengthGoodMemory">
+                            <label for="strengthGoodMemory">Good memory</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="strengthLovesRoutines" id="strengthLovesRoutines">
+                            <label for="strengthLovesRoutines">Loves routines</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="strengthCreative" id="strengthCreative">
+                            <label for="strengthCreative">Creative</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="strengthEnjoysMusic" id="strengthEnjoysMusic">
+                            <label for="strengthEnjoysMusic">Enjoys music</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="strengthEnjoysNumbers" id="strengthEnjoysNumbers">
+                            <label for="strengthEnjoysNumbers">Enjoys numbers</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="strengthHelpful" id="strengthHelpful">
+                            <label for="strengthHelpful">Helpful</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="strengthHardworking" id="strengthHardworking">
+                            <label for="strengthHardworking">Hardworking</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="strengthFastLearner" id="strengthFastLearner">
+                            <label for="strengthFastLearner">Fast learner</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="strengthOther" id="strengthOther">
+                            <label for="strengthOther">Other:</label>
+                            <input type="text" name="strengthOtherDetail" placeholder="Please specify">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION I. DAILY LIVING SKILLS -->
+                <div class="form-section">
+                    <h3><i class="fas fa-utensils"></i> Section I: Daily Living Skills</h3>
+
+                    <div class="form-group">
+                        <h4>Eating</h4>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" name="eating" value="Eats independently" id="eatingIndependent">
+                            <label for="eatingIndependent">Eats independently</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" name="eating" value="Needs some help" id="eatingSomeHelp">
+                            <label for="eatingSomeHelp">Needs some help</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" name="eating" value="Needs full help" id="eatingFullHelp">
+                            <label for="eatingFullHelp">Needs full help</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h4>Dressing</h4>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" name="dressing" value="Dresses independently" id="dressingIndependent">
+                            <label for="dressingIndependent">Dresses independently</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" name="dressing" value="Needs some help" id="dressingSomeHelp">
+                            <label for="dressingSomeHelp">Needs some help</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" name="dressing" value="Needs full help" id="dressingFullHelp">
+                            <label for="dressingFullHelp">Needs full help</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h4>Toilet Skills</h4>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" name="toiletSkills" value="Fully trained" id="toiletFullyTrained">
+                            <label for="toiletFullyTrained">Fully trained</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" name="toiletSkills" value="Needs reminders" id="toiletNeedsReminders">
+                            <label for="toiletNeedsReminders">Needs reminders</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" name="toiletSkills" value="Needs help" id="toiletNeedsHelp">
+                            <label for="toiletNeedsHelp">Needs help</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" name="toiletSkills" value="Uses diapers" id="toiletUsesDiapers">
+                            <label for="toiletUsesDiapers">Uses diapers</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h4>Sleep</h4>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" name="sleep" value="Sleeps well" id="sleepWell">
+                            <label for="sleepWell">Sleeps well</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" name="sleep" value="Difficulty falling asleep" id="sleepDifficulty">
+                            <label for="sleepDifficulty">Difficulty falling asleep</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="radio" name="sleep" value="Wakes often" id="sleepWakesOften">
+                            <label for="sleepWakesOften">Wakes often</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h4>Other Notes</h4>
+                        <textarea name="otherDailyLivingNotes" placeholder="Other notes about daily living or self-help skills"></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    Submit Assessment
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/parent-dashboard.js"></script>
+</body>
+</html>
+
+

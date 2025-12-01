@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Special Needs Reporting System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../css/admin-dashboard.css">
+</head>
+<body>
+    <div class="header">
+        <h2>Admin Dashboard</h2>
+        <div class="user-info">
+            <span id="userEmail"></span>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <div class="dashboard-container">
+        <h1 class="dashboard-title">Welcome to Admin Dashboard</h1>
+        <div class="button-grid">
+            <button class="dashboard-button" onclick="navigateTo('students-enrolled')">
+                <i class="fas fa-user-graduate"></i>
+                Students Enrolled
+                <div class="button-description">
+                    View and manage enrolled students information
+                </div>
+            </button>
+            <button class="dashboard-button" onclick="navigateTo('students-assessment')">
+                <i class="fas fa-clipboard-check"></i>
+                Students for Assessment
+                <div class="button-description">
+                    Generate LD-001 SPED assessments and create shareable links
+                </div>
+            </button>
+            <button class="dashboard-button" onclick="navigateTo('students-assessed')">
+                <i class="fas fa-tasks"></i>
+                Students Assessed
+                <div class="button-description">
+                    View completed student assessments
+                </div>
+            </button>
+            <button class="dashboard-button" onclick="navigateTo('weekly-progress')">
+                <i class="fas fa-chart-line"></i>
+                Students Weekly Progress Report
+                <div class="button-description">
+                    Generate, download, and share LD-R001 weekly progress reports based on IEP
+                </div>
+            </button>
+            <button class="dashboard-button" onclick="navigateTo('iep-generation')">
+                <i class="fas fa-file-alt"></i>
+                IEP Generation
+                <div class="button-description">
+                    Generate and manage Individual Education Plans (IEP)
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <script src="../js/admin-dashboard.js"></script>
+</body>
+</html>
+

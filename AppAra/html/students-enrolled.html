@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students Enrolled - Special Needs Reporting System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../css/students-enrolled.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo-section">
+            <img src="../images/AraLogo.png" alt="Ara Logo" onclick="goToAdminDashboard()">
+        </div>
+        <div class="user-info">
+            <span id="userEmail">specialist@gg.com</span>
+            <button class="logout-btn" onclick="handleLogout()">Logout</button>
+        </div>
+    </div>
+
+    <div class="title-container">
+        <div class="title-content">
+            <i class="fas fa-users"></i>
+            <h1>Students Enrolled</h1>
+        </div>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search student...">
+            <button class="search-btn">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="student-list">
+        <!-- Student cards will be dynamically added here -->
+    </div>
+
+    <script src="../js/students-enrolled.js"></script>
+</body>
+</html>
+
