@@ -3,6 +3,7 @@
  * Handles all HTTP requests with automatic token injection
  */
 import { getAccessToken } from './auth.js';
+import { getAccessToken, logout } from './auth.js';
 const API = {
   
   /**

@@ -2,7 +2,7 @@ import { startTokenRefreshTimer, stopTokenRefreshTimer } from './tokenManager.js
 
 // --- Dynamic BASE_URL ---
 function getBaseURL() {
-  const repoName = 'ara-frontend1 ';
+  const repoName = 'ara-frontend1';
   const pathname = window.location.pathname;
   if (pathname.includes(`/${repoName}`)) {
     return `/${repoName}`;
