@@ -14,7 +14,7 @@ document.querySelectorAll('input, textarea').forEach(input => {
     input.addEventListener('input', updateProgress);
 });
 
-// Simple in-browser "submit" (no backend PHP)
+// Simple submit using shared API wrapper when available
 function submitAssessment() {
     const data = {};
 
@@ -31,13 +31,28 @@ function submitAssessment() {
         }
     });
 
-    // Store in sessionStorage for later viewing if needed
+    // Store in sessionStorage for local backup
     try {
         sessionStorage.setItem('specialistAssessment', JSON.stringify(data));
     } catch (e) {
         console.warn('Could not store specialist assessment in sessionStorage', e);
     }
 
-    alert('Assessment captured successfully (stored in browser).');
+    // Send to backend if shared API is available
+    (async () => {
+        try {
+            if (window.API && window.CONFIG) {
+                const payload = {
+                    source: 'SPECIALIST',
+                    data,
+                };
+                await API.post(CONFIG.ENDPOINTS.ASSESSMENTS, payload);
+            }
+            alert('Assessment submitted successfully.');
+        } catch (err) {
+            console.error('Error submitting specialist assessment:', err);
+            alert(err.message || 'Error submitting assessment. Data is saved locally in this browser.');
+        }
+    })();
 }
 

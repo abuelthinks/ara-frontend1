@@ -1,10 +1,3 @@
-const users = [
-    { email: 'tryadmin@gg.com', password: '1.try23', status: 'Admin' },
-    { email: 'teach@gg.com', password: '1.try23', status: 'Teacher' },
-    { email: 'parent@gg.com', password: '1.try23', status: 'Parent' },
-    { email: 'specialist@gg.com', password: '1.try23', status: 'Specialist' }
-];
-
 // Add floating shapes animation
 function createShapes() {
     const shapes = document.querySelector('.shapes');
@@ -27,39 +20,32 @@ function showError(message) {
     errorMessage.textContent = message;
 }
 
-// Modified validateLogin function
-function validateLogin(event) {
+// Backend-powered validateLogin using Auth helpers
+async function validateLogin(event) {
     event.preventDefault();
-    
+
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    const errorMessage = document.getElementById('errorMessage');
-    
-    const user = users.find(u => u.email === email && u.password === password);
-    
-    if (user) {
-        // Store user status in session storage
-        sessionStorage.setItem('userStatus', user.status);
-        sessionStorage.setItem('userEmail', user.email);
-        
-        // Redirect based on user status
-        switch(user.status) {
-            case 'Admin':
-                window.location.href = 'admin-dashboard.html';
-                break;
-            case 'Teacher':
-                window.location.href = 'teacher-dashboard.html';
-                break;
-            case 'Parent':
-                window.location.href = 'parent-dashboard.html';
-                break;
-            case 'Specialist':
-                window.location.href = 'specialist-dashboard.html';
-                break;
+
+    try {
+        if (!window.Auth || typeof Auth.login !== 'function') {
+            throw new Error('Authentication service not available');
         }
-    } else {
-        showError('Invalid email or password');
+
+        const result = await Auth.login(email, password);
+        const role = result.user?.role;
+
+        if (!role) {
+            throw new Error('No role returned for this user.');
+        }
+
+        // Use shared redirect helper so role → dashboard mapping is centralized
+        Auth.redirectToDashboard(role);
+    } catch (error) {
+        console.error('Login failed:', error);
+        showError(error.message || 'Invalid email or password');
     }
+
     return false;
 }
 
