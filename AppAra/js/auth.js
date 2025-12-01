@@ -5,7 +5,7 @@ function getBaseURL() {
   const repoName = 'ara-frontend1';
   const pathname = window.location.pathname;
   if (pathname.includes(`/${repoName}`)) {
-    return `/${repoName}`;
+    return `/${repoName}/AppAra`;
   } else {
     return '';
   }
