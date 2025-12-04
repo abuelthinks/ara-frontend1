@@ -1,0 +1,353 @@
+:root {
+    --color-primary: #218590;
+    --color-primary-hover: #1a7380;
+    --color-background: #fcfcf9;
+    --color-surface: #fffff5;
+    --color-text: #134252;
+    --color-text-secondary: #626c71;
+    --color-border: #5e5240;
+    --color-error: #c01530;
+    --color-success: #218590;
+    --focus-ring: 0 0 0 3px rgba(33, 133, 144, 0.4);
+    --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-family);
+    background-color: var(--color-background);
+    color: var(--color-text);
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.page-header {
+    background-color: var(--color-surface);
+    border-bottom: 1px solid rgba(94, 82, 64, 0.1);
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.header-left i {
+    cursor: pointer;
+    font-size: 20px;
+    color: var(--color-text);
+    transition: color 150ms;
+}
+
+.header-left i:hover {
+    color: var(--color-primary);
+}
+
+.logo {
+    height: 40px;
+}
+
+.header-left h1 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--color-text);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+}
+
+.logout-btn {
+    padding: 8px 16px;
+    background-color: transparent;
+    color: var(--color-primary);
+    border: 1px solid rgba(33, 133, 144, 0.3);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 150ms;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logout-btn:hover {
+    background-color: rgba(33, 133, 144, 0.08);
+}
+
+.main-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.form-wrapper {
+    width: 100%;
+    max-width: 600px;
+    background-color: var(--color-surface);
+    border-radius: 12px;
+    border: 1px solid rgba(94, 82, 64, 0.2);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
+    padding: 40px;
+}
+
+.progress-section {
+    margin-bottom: 32px;
+}
+
+.progress-bar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.progress-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    background-color: rgba(94, 82, 64, 0.1);
+    color: var(--color-text-secondary);
+    transition: all 150ms;
+}
+
+.progress-dot.active {
+    background-color: var(--color-primary);
+    color: #fcfcf9;
+}
+
+.progress-dot.completed {
+    background-color: var(--color-success);
+    color: #fcfcf9;
+}
+
+.progress-line {
+    flex: 1;
+    height: 2px;
+    background-color: rgba(94, 82, 64, 0.1);
+}
+
+.progress-line.completed {
+    background-color: var(--color-success);
+}
+
+.progress-text {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    text-align: center;
+    margin-top: 8px;
+}
+
+.section-header {
+    margin-bottom: 24px;
+}
+
+.section-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    color: var(--color-text);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.section-description {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+.form-section {
+    display: none;
+}
+
+.form-section.active {
+    display: block;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--color-text);
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    border: 1px solid rgba(94, 82, 64, 0.2);
+    border-radius: 8px;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-family: var(--font-family);
+    transition: border-color 150ms;
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: var(--focus-ring);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.checkbox-item input[type="checkbox"],
+.checkbox-item input[type="radio"] {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    accent-color: var(--color-primary);
+}
+
+.checkbox-item label {
+    cursor: pointer;
+    font-size: 14px;
+    margin: 0;
+}
+
+.inline-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.inline-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 32px;
+    justify-content: space-between;
+}
+
+.btn {
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 150ms;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: #fcfcf9;
+    flex: 1;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: var(--color-primary-hover);
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--color-primary);
+    border: 1px solid rgba(33, 133, 144, 0.3);
+    min-width: 100px;
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background-color: rgba(33, 133, 144, 0.08);
+}
+
+.btn-secondary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.text-input-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+@media (max-width: 600px) {
+    .form-wrapper {
+        padding: 24px 16px;
+    }
+
+    .page-header {
+        flex-wrap: wrap;
+    }
+
+    .text-input-group {
+        grid-template-columns: 1fr;
+    }
+
+    .inline-options {
+        flex-direction: column;
+    }
+}

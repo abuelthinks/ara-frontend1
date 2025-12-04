@@ -2,8 +2,6 @@
  * API Wrapper
  * Handles all HTTP requests with automatic token injection
  */
-import { getAccessToken } from './auth.js';
-import { getAccessToken, logout } from './auth.js';
 const API = {
   
   /**
@@ -46,7 +44,8 @@ const API = {
    */
   async request(method, endpoint, data = null) {
     const url = CONFIG.API_BASE_URL + endpoint;
-    const token = getAccessToken();
+    const token = window.Auth ? Auth.getAccessToken() : null;
+
 
     const options = {
       method: method,
@@ -70,7 +69,7 @@ const API = {
 
       // Handle 401 Unauthorized
       if (response.status === 401) {
-        logout();
+        Auth.logout();
         throw new Error('Session expired. Please login again.');
       }
 

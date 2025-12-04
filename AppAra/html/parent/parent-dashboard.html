@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Dashboard - Ara</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --color-primary: #218590;
+            --color-primary-hover: #1a7380;
+            --color-background: #fcfcf9;
+            --color-surface: #fffff5;
+            --color-text: #134252;
+            --color-text-secondary: #626c71;
+            --color-border: #5e5240;
+            --color-error: #c01530;
+            --color-success: #218590;
+            --color-warning: #f59e0b;
+            --color-info: #3b82f6;
+            --focus-ring: 0 0 0 3px rgba(33, 133, 144, 0.4);
+            --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-family);
+            background-color: var(--color-background);
+            color: var(--color-text);
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .dashboard-header {
+            background-color: var(--color-surface);
+            border-bottom: 1px solid rgba(94, 82, 64, 0.1);
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo {
+            height: 40px;
+        }
+
+        .header-left h1 {
+            font-size: 22px;
+            font-weight: 600;
+            margin: 0;
+            color: var(--color-text);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--color-text-secondary);
+        }
+
+        .logout-btn {
+            padding: 8px 16px;
+            background-color: transparent;
+            color: var(--color-primary);
+            border: 1px solid rgba(33, 133, 144, 0.3);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 150ms;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logout-btn:hover {
+            background-color: rgba(33, 133, 144, 0.08);
+        }
+
+        /* Main Container */
+        .dashboard-container {
+            flex: 1;
+            padding: 32px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            margin-bottom: 32px;
+        }
+
+        .welcome-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+            color: var(--color-text);
+        }
+
+        .welcome-subtitle {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Tabs */
+        .tabs-container {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 2px solid rgba(94, 82, 64, 0.1);
+        }
+
+        .tab {
+            padding: 12px 16px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            border-bottom: 3px solid transparent;
+            transition: all 150ms;
+            position: relative;
+            margin-bottom: -2px;
+        }
+
+        .tab:hover {
+            color: var(--color-text);
+        }
+
+        .tab.active {
+            color: var(--color-primary);
+            border-bottom-color: var(--color-primary);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Children Grid */
+        .children-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        /* Child Card */
+        .child-card {
+            background-color: var(--color-surface);
+            border: 1px solid rgba(94, 82, 64, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+            transition: all 150ms;
+        }
+
+        .child-card:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
+            border-color: rgba(33, 133, 144, 0.3);
+        }
+
+        .child-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .child-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #218590, #1a7380);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        .child-meta {
+            flex: 1;
+            margin-left: 12px;
+        }
+
+        .child-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0;
+            color: var(--color-text);
+        }
+
+        .child-age {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            margin: 4px 0 0 0;
+        }
+
+        .child-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .badge-pending {
+            background-color: rgba(245, 158, 11, 0.15);
+            color: #b45309;
+        }
+
+        .badge-in-progress {
+            background-color: rgba(59, 130, 246, 0.15);
+            color: #1e40af;
+        }
+
+        .badge-completed {
+            background-color: rgba(34, 197, 94, 0.15);
+            color: #166534;
+        }
+
+        /* Assessment Status */
+        .assessment-status {
+            margin: 16px 0;
+            padding: 12px;
+            background-color: rgba(94, 82, 64, 0.05);
+            border-radius: 8px;
+        }
+
+        .status-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            margin: 0 0 8px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--color-text);
+        }
+
+        .status-icon {
+            font-size: 16px;
+        }
+
+        .status-icon.pending {
+            color: var(--color-warning);
+        }
+
+        .status-icon.in-progress {
+            color: var(--color-info);
+        }
+
+        .status-icon.completed {
+            color: var(--color-success);
+        }
+
+        /* Progress Bar */
+        .progress-bar-container {
+            margin: 16px 0;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-bottom: 8px;
+            color: var(--color-text-secondary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background-color: rgba(94, 82, 64, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #218590, #1a7380);
+            border-radius: 3px;
+            transition: width 300ms ease;
+        }
+
+        /* Card Actions */
+        .card-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            border-top: 1px solid rgba(94, 82, 64, 0.1);
+            padding-top: 16px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 10px 12px;
+            font-size: 13px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 150ms;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-weight: 500;
+        }
+
+        .action-btn-primary {
+            background-color: var(--color-primary);
+            color: white;
+        }
+
+        .action-btn-primary:hover {
+            background-color: var(--color-primary-hover);
+        }
+
+        .action-btn-secondary {
+            background-color: transparent;
+            color: var(--color-primary);
+            border: 1px solid rgba(33, 133, 144, 0.3);
+        }
+
+        .action-btn-secondary:hover {
+            background-color: rgba(33, 133, 144, 0.08);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            color: rgba(94, 82, 64, 0.2);
+            margin-bottom: 16px;
+        }
+
+        .empty-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--color-text);
+            margin: 0 0 8px 0;
+        }
+
+        .empty-message {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            margin: 0 0 24px 0;
+        }
+
+        .empty-action {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 150ms;
+            text-decoration: none;
+        }
+
+        .empty-action:hover {
+            background-color: var(--color-primary-hover);
+        }
+
+        /* Assessment Card */
+        .assessment-card {
+            background-color: var(--color-surface);
+            border: 1px solid rgba(94, 82, 64, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .assessment-info {
+            flex: 1;
+        }
+
+        .assessment-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 0 4px 0;
+            color: var(--color-text);
+        }
+
+        .assessment-date {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        .assessment-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .view-btn {
+            padding: 8px 16px;
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 150ms;
+        }
+
+        .view-btn:hover {
+            background-color: var(--color-primary-hover);
+        }
+
+        .download-btn {
+            padding: 8px 12px;
+            background-color: transparent;
+            color: var(--color-primary);
+            border: 1px solid rgba(33, 133, 144, 0.3);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 150ms;
+        }
+
+        .download-btn:hover {
+            background-color: rgba(33, 133, 144, 0.08);
+        }
+
+        /* Add Child Button */
+        .add-child-card {
+            background-color: var(--color-surface);
+            border: 2px dashed rgba(33, 133, 144, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 240px;
+            cursor: pointer;
+            transition: all 150ms;
+        }
+
+        .add-child-card:hover {
+            border-color: var(--color-primary);
+            background-color: rgba(33, 133, 144, 0.02);
+        }
+
+        .add-icon {
+            font-size: 40px;
+            color: var(--color-primary);
+            margin-bottom: 12px;
+        }
+
+        .add-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-primary);
+            margin: 0;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--color-surface);
+            border-radius: 12px;
+            padding: 32px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(94, 82, 64, 0.1);
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0;
+            color: var(--color-text);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--color-text-secondary);
+            transition: color 150ms;
+        }
+
+        .modal-close:hover {
+            color: var(--color-text);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .children-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .assessment-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .assessment-actions {
+                width: 100%;
+            }
+
+            .view-btn {
+                flex: 1;
+            }
+
+            .dashboard-container {
+                padding: 20px 16px;
+            }
+
+            .welcome-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="dashboard-header">
+        <div class="header-left">
+            <img src="../images/AraLogo.png" alt="Ara Logo" class="logo">
+            <h1>Parent Dashboard</h1>
+        </div>
+        <div class="header-right">
+            <div class="user-info">
+                <i class="fas fa-user-circle"></i>
+                <span id="parentEmail"></span>
+            </div>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="dashboard-container">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <h2 class="welcome-title">Welcome, <span id="parentName">Parent</span>!</h2>
+            <p class="welcome-subtitle">Manage your child's assessments and view results</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs-container">
+            <button class="tab active" onclick="switchTab('my-children')">
+                <i class="fas fa-child"></i> My Children
+            </button>
+            <button class="tab" onclick="switchTab('assessments')">
+                <i class="fas fa-clipboard-check"></i> Assessments
+            </button>
+            <button class="tab" onclick="switchTab('reports')">
+                <i class="fas fa-file-pdf"></i> Reports
+            </button>
+        </div>
+
+        <!-- Tab 1: My Children -->
+        <div class="tab-content active" id="my-children">
+            <div class="children-grid" id="childrenGrid">
+                <!-- Children cards will be populated here -->
+            </div>
+        </div>
+
+        <!-- Tab 2: Assessments -->
+        <div class="tab-content" id="assessments">
+            <div id="assessmentsContainer">
+                <!-- Assessment cards will be populated here -->
+            </div>
+        </div>
+
+        <!-- Tab 3: Reports -->
+        <div class="tab-content" id="reports">
+            <div id="reportsContainer">
+                <!-- Report cards will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Assessment Modal -->
+    <div class="modal" id="assessmentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Assessment Details</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modalBody">
+                <!-- Assessment details will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Core helper scripts -->
+    <script src="../../js/config.js"></script>
+    <script src="../../js/storage.js"></script>
+    <script src="../../js/tokenManager.js"></script>
+    <script src="../../js/auth.js"></script>
+    <script src="../../js/api.js"></script>
+    <script src="../../js/pages/parent-dashboard.js"></script>
+</body>
+</html>

@@ -1,6 +1,8 @@
 // Add floating shapes animation
 function createShapes() {
     const shapes = document.querySelector('.shapes');
+    if (!shapes) return;
+
     for (let i = 0; i < 15; i++) {
         const shape = document.createElement('div');
         shape.classList.add('shape');
@@ -13,42 +15,121 @@ function createShapes() {
     }
 }
 
-// Update error message display
 function showError(message) {
     const errorMessage = document.getElementById('errorMessage');
-    errorMessage.style.display = 'block';
+    if (!errorMessage) return;
     errorMessage.textContent = message;
+    errorMessage.classList.add('show');
+    errorMessage.style.display = 'block';
 }
 
-// Backend-powered validateLogin using Auth helpers
-async function validateLogin(event) {
+function hideError() {
+    const errorMessage = document.getElementById('errorMessage');
+    if (!errorMessage) return;
+    errorMessage.classList.remove('show');
+    errorMessage.style.display = 'none';
+}
+
+// Main login handler (email OR username)
+async function handleLoginSubmit(event) {
     event.preventDefault();
 
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    const identifierInput = document.getElementById('email');      // can be email or username
+    const passwordInput   = document.getElementById('password');
+    const spinner         = document.getElementById('spinner');
+    const btn             = document.getElementById('loginBtn');
 
-    try {
-        if (!window.Auth || typeof Auth.login !== 'function') {
-            throw new Error('Authentication service not available');
-        }
+    const identifier = identifierInput ? identifierInput.value : '';
+    const password   = passwordInput ? passwordInput.value : '';
 
-        const result = await Auth.login(email, password);
-        const role = result.user?.role;
-
-        if (!role) {
-            throw new Error('No role returned for this user.');
-        }
-
-        // Use shared redirect helper so role → dashboard mapping is centralized
-        Auth.redirectToDashboard(role);
-    } catch (error) {
-        console.error('Login failed:', error);
-        showError(error.message || 'Invalid email or password');
+    if (!window.Auth || typeof Auth.login !== 'function') {
+        showError('Authentication service not available.');
+        return;
     }
 
-    return false;
+    // UI: loading state
+    if (spinner) spinner.classList.add('show');
+    if (btn) btn.disabled = true;
+    hideError();
+
+    try {
+        console.log('[Login] Attempting with identifier:', identifier);
+
+        // Auth.login(username, password) – backend accepts username OR email
+        const result = await Auth.login(identifier, password);
+
+        if (spinner) spinner.classList.remove('show');
+        if (btn) btn.disabled = false;
+
+        const user = result.user;
+        if (!user) {
+            showError('Invalid response from server.');
+            return;
+        }
+
+        const role = (user.role || 'PARENT').toUpperCase();
+        console.log('[Login] Success! User:', user.username || user.email, 'Role:', role);
+
+        // Smart redirect based on role
+        if (role === 'PARENT') {
+            redirectParent(user);
+        } else {
+            // For other roles, use standard redirect
+            Auth.redirectToDashboard(role);
+        }
+    } catch (error) {
+        console.error('[Login] Error:', error);
+        if (spinner) spinner.classList.remove('show');
+        if (btn) btn.disabled = false;
+        showError(error.message || 'Invalid username/email or password.');
+    }
 }
 
-// Initialize shapes on load
-createShapes();
+// --- Smart Parent Redirect ---
+async function redirectParent(user) {
+    const base = window.BASE_URL || '/AppAra';
+    
+    console.log('[Redirect] Parent login, sending to parent-dashboard.html');
+    
+    // All parents go straight to dashboard
+    setTimeout(() => {
+        window.location.href = `${base}/html/parent/parent-dashboard.html`;
+    }, 500);
+}
 
+
+// Auto‑redirect if already logged in
+function checkAlreadyAuthenticated() {
+    if (!window.Auth) {
+        console.warn('[Login] Auth not available on load');
+        return;
+    }
+
+    console.log('[Login] Checking if already authenticated...');
+    if (Auth.isAuthenticated()) {
+        const user = Auth.getCurrentUser();
+        if (user) {
+            const role = (user.role || 'PARENT').toUpperCase();
+            console.log('[Login] Already authenticated as:', user.username || user.email, 'Role:', role);
+            
+            if (role === 'PARENT') {
+                redirectParent(user);
+            } else {
+                Auth.redirectToDashboard(role);
+            }
+        }
+    } else {
+        console.log('[Login] Not authenticated, showing login form');
+    }
+}
+
+// Wire up events on DOM ready
+document.addEventListener('DOMContentLoaded', () => {
+    createShapes();
+    checkAlreadyAuthenticated();
+
+    const form = document.getElementById('loginForm');
+    if (form) {
+        form.addEventListener('submit', handleLoginSubmit);
+    }
+});

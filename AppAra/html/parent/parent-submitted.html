@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment Submitted</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../../css/parent-submitted.css">
+</head>
+<body>
+    <div class="container">
+        <div class="success-header">
+            <i class="fas fa-check-circle success-icon"></i>
+            <h1>Assessment Submitted Successfully</h1>
+            <p>Thank you for completing the assessment. Here's a summary of the information you provided:</p>
+        </div>
+        <div id="formSummary">
+            <!-- Data will be populated here by JavaScript -->
+        </div>
+        <div class="buttons">
+            <button class="btn btn-primary" onclick="window.print()">
+                <i class="fas fa-print"></i> Print Summary
+            </button>
+            <button class="btn btn-secondary" onclick="window.location.href='parent-homepage.html'">
+                <i class="fas fa-home"></i> Go to Homepage
+            </button>
+        </div>
+    </div>
+
+    <script src="../../js/pages/parent-submitted.js"></script>
+</body>
+</html>
+

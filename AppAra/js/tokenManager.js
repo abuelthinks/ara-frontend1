@@ -1,15 +1,14 @@
 // tokenManager.js
-
-const TOKEN_REFRESH_INTERVAL = 29 * 60 * 1000; // 29 minutes before 30 min expiry
-
+const TOKEN_REFRESH_INTERVAL = 15 * 60 * 1000; // example: 15 minutes
 let refreshTimer = null;
 
-export const startTokenRefreshTimer = (refreshToken) => {
+function startTokenRefreshTimer(refreshToken) {
     if (refreshTimer) clearInterval(refreshTimer);
 
     refreshTimer = setInterval(async () => {
         try {
-            const response = await fetch('https://ara-test1-ca0b96725df3.herokuapp.com/api/token/refresh/', {
+            const url = `${CONFIG.API_BASE_URL}/token/refresh/`; // adjust if backend path differs
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -19,17 +18,27 @@ export const startTokenRefreshTimer = (refreshToken) => {
 
             if (response.ok) {
                 const data = await response.json();
-                localStorage.setItem('access_token', data.access);
+                // use same key as auth.js
+                localStorage.setItem('ara_jwt_access', data.access);
                 console.log('Token refreshed automatically');
-            } else {
-                logout(); // Make sure logout() is imported or available here
+            } else if (window.Auth) {
+                Auth.logout();
             }
         } catch (error) {
             console.error('Token refresh error:', error);
         }
     }, TOKEN_REFRESH_INTERVAL);
-};
+}
 
-export const stopTokenRefreshTimer = () => {
-    if (refreshTimer) clearInterval(refreshTimer);
+function stopTokenRefreshTimer() {
+    if (refreshTimer) {
+        clearInterval(refreshTimer);
+        refreshTimer = null;
+    }
+}
+
+// expose globally
+window.TokenManager = {
+    startTokenRefreshTimer,
+    stopTokenRefreshTimer,
 };

@@ -1,5 +1,3 @@
-import { startTokenRefreshTimer, stopTokenRefreshTimer } from './tokenManager.js';
-
 // --- Dynamic BASE_URL ---
 function getBaseURL() {
   const repoName = 'ara-frontend1';
@@ -7,16 +5,21 @@ function getBaseURL() {
   const pathname = window.location.pathname;
   if (pathname.includes(`/${repoName}`)) {
     return `/${repoName}/${appFolder}`;
-  } else {
+  } if (pathname.includes('/AppAra/')) {
+    return '/AppAra';
+  }else {
     return '';
   }
 }
 const BASE_URL = getBaseURL();
+window.BASE_URL = BASE_URL;
+
 
 // Key names for localStorage
 const ACCESS_KEY = 'ara_jwt_access';
 const REFRESH_KEY = 'ara_jwt_refresh';
 const USER_KEY = 'ara_current_user';
+
 
 const login = async (username, password) => {
   try {
@@ -24,19 +27,23 @@ const login = async (username, password) => {
     const url = `${CONFIG.API_BASE_URL}/auth/login/`;
     console.log('[Auth] Login URL:', url);
 
+
     const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password }),
     });
 
+
     console.log('[Auth] Response status:', response.status);
     const data = await response.json();
     console.log('[Auth] Response data:', data);
 
+
     if (!response.ok) {
       throw new Error(data.error || 'Login failed');
     }
+
 
     // Expect JWT: { access, refresh, user }
     if (!data.access || !data.refresh || !data.user) {
@@ -44,15 +51,19 @@ const login = async (username, password) => {
       throw new Error('Invalid login response from server');
     }
 
+
     localStorage.setItem(ACCESS_KEY, data.access);
     localStorage.setItem(REFRESH_KEY, data.refresh);
     localStorage.setItem(USER_KEY, JSON.stringify(data.user));
 
+
     console.log(`[Auth] Login successful: ${data.user.username} (${data.user.role})`);
+
 
     // Start auto-refresh timer for token
     startTokenRefreshTimer(data.refresh);
     console.log('[Auth] Token refresh timer started');
+
 
     // Let caller decide where to redirect
     return data;
@@ -62,23 +73,45 @@ const login = async (username, password) => {
   }
 };
 
+
+const setToken = (access, refresh, user) => {
+  /**
+   * Manually set tokens and user (used by signup)
+   */
+  localStorage.setItem(ACCESS_KEY, access);
+  localStorage.setItem(REFRESH_KEY, refresh);
+  localStorage.setItem(USER_KEY, JSON.stringify(user));
+  
+  if (user.role === 'PARENT') {
+    const isFirstLogin = !localStorage.getItem('parentFirstLoginComplete');
+    localStorage.setItem('parentIsFirstLogin', isFirstLogin ? 'true' : 'false');
+  }
+  
+  console.log(`[Auth] Tokens set for user: ${user.username} (${user.role})`);
+  startTokenRefreshTimer(refresh);
+};
+
+
 const redirectToDashboard = (role) => {
   const redirectMap = {
-    'PARENT': 'html/parent-dashboard.html',
-    'TEACHER': 'html/teacher-dashboard.html',
-    'SPECIALIST': 'html/specialist-dashboard.html',
-    'ADMIN': 'html/admin-dashboard.html',
+    'PARENT': 'html/parent/parent-dashboard.html',
+    'TEACHER': 'html/teacher/teacher-dashboard.html',
+    'SPECIALIST': 'html/specialist/specialist-dashboard.html',
+    'ADMIN': 'html/admin/admin-dashboard.html',
   };
-  const redirectUrl = redirectMap[role] || 'html/parent-dashboard.html';
+  const redirectUrl = redirectMap[role] || 'html/parent/parent-dashboard.html';
   console.log(`[Auth] Redirecting ${role} to ${BASE_URL}/${redirectUrl}`);
   window.location.href = `${BASE_URL}/${redirectUrl}`;
 };
+
+
 
 const logout = async () => {
   try {
     // Stop auto-refresh timer for token
     stopTokenRefreshTimer();
     console.log('[Auth] Token refresh timer stopped');
+
 
     const access = localStorage.getItem(ACCESS_KEY);
     const refresh = localStorage.getItem(REFRESH_KEY);
@@ -98,42 +131,48 @@ const logout = async () => {
     localStorage.removeItem(ACCESS_KEY);
     localStorage.removeItem(REFRESH_KEY);
     localStorage.removeItem(USER_KEY);
-    window.location.href = `${BASE_URL}/`;
+    window.location.href = `${BASE_URL}/html/login.html`;
   }
 };
+
 
 const getCurrentUser = () => {
   const user = localStorage.getItem(USER_KEY);
   return user ? JSON.parse(user) : null;
 };
 
+
 const getAccessToken = () => localStorage.getItem(ACCESS_KEY);
 const getRefreshToken = () => localStorage.getItem(REFRESH_KEY);
 
+
 const isAuthenticated = () =>
   !!localStorage.getItem(ACCESS_KEY) && !!localStorage.getItem(USER_KEY);
+
 
 const hasRole = (requiredRole) => {
   const user = getCurrentUser();
   return user && user.role === requiredRole;
 };
 
+
 const hasAnyRole = (roles) => {
   const user = getCurrentUser();
   return user && roles.includes(user.role);
 };
 
+
 const requireRole = (requiredRole) => {
   if (!isAuthenticated()) {
     console.warn('[Auth] Not authenticated, redirecting to login');
-    window.location.href = `${BASE_URL}/`;
+    window.location.href = `${BASE_URL}/html/login.html`;
     return false;
   }
   const user = getCurrentUser();
   if (user.role !== requiredRole) {
     console.error(`[Auth] User ${user.username} (${user.role}) tried to access ${requiredRole} page`);
     alert(`Access denied. This page is for ${requiredRole}s only.`);
-    window.location.href = `${BASE_URL}/`;
+    window.location.href = `${BASE_URL}/html/login.html`;
     return false;
   }
   return true;
@@ -142,36 +181,24 @@ const requireRole = (requiredRole) => {
 const requireAnyRole = (roles) => {
   if (!isAuthenticated()) {
     console.warn('[Auth] Not authenticated, redirecting to login');
-    window.location.href = `${BASE_URL}/`;
+    window.location.href = `${BASE_URL}/html/login.html`;
     return false;
   }
   const user = getCurrentUser();
   if (!roles.includes(user.role)) {
     console.error(`[Auth] User ${user.username} (${user.role}) tried to access restricted page`);
     alert(`Access denied. This page is for ${roles.join(', ')} only.`);
-    window.location.href = `${BASE_URL}/`;
+    window.location.href = `${BASE_URL}/html/login.html`;
     return false;
   }
   return true;
 };
 
-export {
-  login,
-  logout,
-  getCurrentUser,
-  getAccessToken,
-  getRefreshToken,
-  isAuthenticated,
-  hasRole,
-  hasAnyRole,
-  requireRole,
-  requireAnyRole,
-  redirectToDashboard,
-};
 
 // Expose helpers on window for non-module scripts
 window.Auth = {
   login,
+  setToken,
   logout,
   getCurrentUser,
   getAccessToken,

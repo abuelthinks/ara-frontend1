@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Education Assessment Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../../css/assessment-generator.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo-section" onclick="goToAdminDashboard()">'">
+            <img src="../../images/AraLogo.png" alt="Ara Logo">
+            <h2><i class="fas fa-file-medical"></i> Assessment Form</h2>
+        </div>
+        <button class="logout-btn" onclick="Auth.logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+        </button>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress" id="formProgress"></div>
+    </div>
+
+    <div class="form-container">
+        <h1>SPECIAL EDUCATION ASSESSMENT FORM</h1>
+
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-user"></i> 1. General Information
+            </h2>
+            <p>Child's Full Name</p>
+            <input type="text" class="input-field">
+            
+            <p>Date of Birth</p>
+            <input type="date" class="input-field" placeholder="mm/dd/yyyy">
+            
+            <p>Age</p>
+            <input type="number" class="input-field">
+            
+            <p>Gender</p>
+            <input type="text" class="input-field">
+            
+            <p>Parent/Guardian's Name</p>
+            <input type="text" class="input-field">
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-history"></i> 2. Background Information
+            </h2>
+            <label>
+                <input type="checkbox"> Diagnostic Report attached
+            </label>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-baby"></i> 3. Developmental History
+            </h2>
+            <p>At what age did the child:</p>
+            <div>
+                <p>Sit up:</p>
+                <input type="text" class="input-field">
+                <p>Crawl:</p>
+                <input type="text" class="input-field">
+                <p>Walk:</p>
+                <input type="text" class="input-field">
+                <p>Speak first words:</p>
+                <input type="text" class="input-field">
+                <p>Form sentences:</p>
+                <input type="text" class="input-field">
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-graduation-cap"></i> 4. Educational Information
+            </h2>
+            <input type="text" class="input-field" placeholder="Previous School attended">
+            <input type="text" class="input-field" placeholder="Level">
+            <input type="text" class="input-field" placeholder="Special Education Services Received (if any)">
+            <input type="text" class="input-field" placeholder="Individualized Education Plan (IEP): [Yes/No]">
+            <input type="text" class="input-field" placeholder="Other Services">
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-exclamation-circle"></i> 5. Areas of Concern
+            </h2>
+            
+            <h3>Academic Skills:</h3>
+            <table class="skills-table" id="academic-skills-table">
+                <tr>
+                    <th>Skill</th>
+                    <th>Poor</th>
+                    <th>Fair</th>
+                    <th>Good</th>
+                    <th>Excellent</th>
+                </tr>
+                <tr>
+                    <td>Reading</td>
+                    <td><input type="radio" name="reading"></td>
+                    <td><input type="radio" name="reading"></td>
+                    <td><input type="radio" name="reading"></td>
+                    <td><input type="radio" name="reading"></td>
+                </tr>
+                <tr>
+                    <td>Writing</td>
+                    <td><input type="radio" name="writing"></td>
+                    <td><input type="radio" name="writing"></td>
+                    <td><input type="radio" name="writing"></td>
+                    <td><input type="radio" name="writing"></td>
+                </tr>
+                <tr>
+                    <td>Mathematics</td>
+                    <td><input type="radio" name="mathematics"></td>
+                    <td><input type="radio" name="mathematics"></td>
+                    <td><input type="radio" name="mathematics"></td>
+                    <td><input type="radio" name="mathematics"></td>
+                </tr>
+            </table>
+            <button type="button" onclick="addOtherSkill()" style="margin-top: 10px;">
+                <i class="fas fa-plus"></i> Add Other Skill
+            </button>
+
+            <h3>Communication Skills:</h3>
+            <table class="skills-table">
+                <tr>
+                    <th>Skill</th>
+                    <th>Poor</th>
+                    <th>Fair</th>
+                    <th>Good</th>
+                    <th>Excellent</th>
+                </tr>
+                <tr>
+                    <td>Expressive Language</td>
+                    <td><input type="radio" name="expressive"></td>
+                    <td><input type="radio" name="expressive"></td>
+                    <td><input type="radio" name="expressive"></td>
+                    <td><input type="radio" name="expressive"></td>
+                </tr>
+                <tr>
+                    <td>Receptive Language</td>
+                    <td><input type="radio" name="receptive"></td>
+                    <td><input type="radio" name="receptive"></td>
+                    <td><input type="radio" name="receptive"></td>
+                    <td><input type="radio" name="receptive"></td>
+                </tr>
+                <tr>
+                    <td>Social Communication</td>
+                    <td><input type="radio" name="social-comm"></td>
+                    <td><input type="radio" name="social-comm"></td>
+                    <td><input type="radio" name="social-comm"></td>
+                    <td><input type="radio" name="social-comm"></td>
+                </tr>
+            </table>
+
+            <h3>Motor Skills:</h3>
+            <table class="skills-table">
+                <tr>
+                    <th>Skill</th>
+                    <th>Poor</th>
+                    <th>Fair</th>
+                    <th>Good</th>
+                    <th>Excellent</th>
+                </tr>
+                <tr>
+                    <td>Fine Motor</td>
+                    <td><input type="radio" name="fine-motor"></td>
+                    <td><input type="radio" name="fine-motor"></td>
+                    <td><input type="radio" name="fine-motor"></td>
+                    <td><input type="radio" name="fine-motor"></td>
+                </tr>
+                <tr>
+                    <td>Gross Motor</td>
+                    <td><input type="radio" name="gross-motor"></td>
+                    <td><input type="radio" name="gross-motor"></td>
+                    <td><input type="radio" name="gross-motor"></td>
+                    <td><input type="radio" name="gross-motor"></td>
+                </tr>
+            </table>
+
+            <h3>Behavioral and Emotional Skills:</h3>
+            <table class="skills-table">
+                <tr>
+                    <th>Skill</th>
+                    <th>Poor</th>
+                    <th>Fair</th>
+                    <th>Good</th>
+                    <th>Excellent</th>
+                </tr>
+                <tr>
+                    <td>Attention</td>
+                    <td><input type="radio" name="attention"></td>
+                    <td><input type="radio" name="attention"></td>
+                    <td><input type="radio" name="attention"></td>
+                    <td><input type="radio" name="attention"></td>
+                </tr>
+                <tr>
+                    <td>Impulse Control</td>
+                    <td><input type="radio" name="impulse"></td>
+                    <td><input type="radio" name="impulse"></td>
+                    <td><input type="radio" name="impulse"></td>
+                    <td><input type="radio" name="impulse"></td>
+                </tr>
+                <tr>
+                    <td>Social Interaction</td>
+                    <td><input type="radio" name="social-int"></td>
+                    <td><input type="radio" name="social-int"></td>
+                    <td><input type="radio" name="social-int"></td>
+                    <td><input type="radio" name="social-int"></td>
+                </tr>
+                <tr>
+                    <td>Emotional Regulation</td>
+                    <td><input type="radio" name="emotional"></td>
+                    <td><input type="radio" name="emotional"></td>
+                    <td><input type="radio" name="emotional"></td>
+                    <td><input type="radio" name="emotional"></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-star"></i> 6. Strengths and Interests
+            </h2>
+            <textarea class="text-area" placeholder="Academic Strengths"></textarea>
+            <textarea class="text-area" placeholder="Social Strengths"></textarea>
+            <textarea class="text-area" placeholder="Personal Interests/Hobbies"></textarea>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-hands-helping"></i> 7. Current Services and Therapies
+            </h2>
+            <div class="therapy-section">
+                <p>Has the child attended therapy sessions in other centers before? [Yes/No]</p>
+                <p>If yes, what is the name of the center?</p>
+                <input type="text" class="input-field">
+                <p>How many days?</p>
+                <input type="text" class="input-field">
+                <p>From what time?</p>
+                <input type="text" class="input-field">
+                <p>To what time?</p>
+                <input type="text" class="input-field">
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-comments"></i> 8. Parent/Guardian Input
+            </h2>
+            <textarea class="text-area" placeholder="What are your primary concerns regarding your child's development?"></textarea>
+            <textarea class="text-area" placeholder="What do you hope to achieve through our special education program?"></textarea>
+            <textarea class="text-area" placeholder="Are there any specific strategies or approaches that have been effective for your child?"></textarea>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-info-circle"></i> 9. Additional Information
+            </h2>
+            <textarea class="text-area" placeholder="Is there any other information you feel is important for us to know about your child?"></textarea>
+        </div>
+
+        <div class="button-container">
+            <button class="submit-btn" onclick="generateAssessment()">
+                <i class="fas fa-file-export"></i> Generate Assessment
+            </button>
+            <button class="submit-btn" onclick="createShareableLink()">
+                <i class="fas fa-share-alt"></i> Create Shareable Link
+            </button>
+        </div>
+    </div>
+
+    <script src="../../js/config.js"></script>
+    <script src="../js/storage.js"></script>
+    <script src="../../js/tokenManager.js"></script>
+    <script src="../../js/api.js"></script>
+    <script src="../../js/auth.js"></script>
+
+    <script src="../../js/pages/assessment-generator.js"></script>
+</body>
+</html>
+

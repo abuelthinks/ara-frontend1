@@ -1,242 +1,294 @@
-    window.onload = function() {
-        // Require authenticated parent via shared Auth helper if available
-        if (window.Auth && typeof Auth.requireRole === 'function') {
-            const ok = Auth.requireRole('PARENT');
-            if (!ok) return;
-        }
+/**
+ * Parent Dashboard - Refactored
+ * Child card states: Intake needed → For assessment → Assessment scheduled → Assessed → Enrolled
+ */
 
-        const logoutBtn = document.querySelector('.logout-btn');
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', () => {
-                if (window.Auth && typeof Auth.logout === 'function') {
-                    Auth.logout();
-                } else {
-                    sessionStorage.clear();
-                    window.location.href = '../html/login.html';
-                }
-            });
-        }
-    };
+let currentUser = null;
+let children = [];
 
-    function generateRandomFileName() {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let result = '';
-        for (let i = 0; i < 10; i++) {
-            result += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return result + '.html';
+// --- Auth Check ---
+window.onload = async function() {
+    if (window.Auth && typeof Auth.requireRole === 'function') {
+        const ok = Auth.requireRole('PARENT');
+        if (!ok) return;
     }
 
-    async function handleFormSubmission(e) {
-        e.preventDefault();
-        
-        // Show loading state on button
-        const submitBtn = document.querySelector('.submit-btn');
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Submitting...';
-        
-        const form = document.getElementById('assessmentForm');
-        const formData = new FormData(form);
-        const data = {};
-        
-        // Convert FormData to object (single-value fields)
-        for (let [key, value] of formData.entries()) {
-            if (!data[key]) {
-                data[key] = value;
-            } else {
-                // If multiple values share the same name, store as array
-                if (!Array.isArray(data[key])) {
-                    data[key] = [data[key]];
-                }
-                data[key].push(value);
-            }
-        }
-
-        // Structured medical conditions based on optional known conditions
-        data.medicalConditions = {
-            autism: document.getElementById('autism')?.checked || false,
-            speechDelay: document.getElementById('speechDelay')?.checked || false,
-            adhd: document.getElementById('adhd')?.checked || false,
-            learningDifficulty: document.getElementById('learningDifficulty')?.checked || false,
-            developmentalDelay: document.getElementById('developmentalDelay')?.checked || false,
-            sensoryDifficulty: document.getElementById('sensoryDifficulty')?.checked || false,
-            otherCondition: document.getElementById('otherCondition')?.checked || false,
-            conditionNotSure: document.getElementById('conditionNotSure')?.checked || false,
-            otherConditionDetail: document.querySelector('input[name="otherConditionDetail"]')?.value || ''
-        };
-
-        // Structured areas of concern
-        data.areasOfConcern = {
-            communication: document.getElementById('concernCommunication')?.checked || false,
-            learning: document.getElementById('concernLearning')?.checked || false,
-            motor: document.getElementById('concernMotor')?.checked || false,
-            social: document.getElementById('concernSocial')?.checked || false,
-            behavior: document.getElementById('concernBehavior')?.checked || false,
-            emotions: document.getElementById('concernEmotions')?.checked || false,
-            sensory: document.getElementById('concernSensory')?.checked || false,
-            dailyLiving: document.getElementById('concernDailyLiving')?.checked || false,
-            safety: document.getElementById('concernSafety')?.checked || false,
-            notSure: document.getElementById('concernNotSure')?.checked || false
-        };
-
-        try {
-            // Store form data in sessionStorage for summary page
-            sessionStorage.setItem('formData', JSON.stringify(data));
-
-            // Save to backend via shared API wrapper, if available
-            if (window.API && window.CONFIG) {
-                const payload = {
-                    source: 'PARENT',
-                    data,
-                };
-                await API.post(CONFIG.ENDPOINTS.ASSESSMENTS, payload);
-            }
-
-            // Redirect to submitted summary page regardless of backend state
-            window.location.href = '../html/parent-submitted.html';
-        } catch (error) {
-            console.error('Error submitting assessment:', error);
-            alert(error.message || 'Error submitting assessment. Please try again.');
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Submit Assessment';
-        }
+    currentUser = Auth.getCurrentUser();
+    if (currentUser) {
+        document.getElementById('parentEmail').textContent = currentUser.email;
+        document.getElementById('parentName').textContent = currentUser.first_name || 'Parent';
     }
 
-    // Add event listener to form
-    document.getElementById('assessmentForm').addEventListener('submit', handleFormSubmission);
+    setupLogout();
+    await loadChildren();
+};
 
-    // Update progress bar as user fills form
-    const form = document.querySelector('form');
-    const inputs = form.querySelectorAll('input, select, textarea');
-    const progressBar = document.getElementById('formProgress');
+// --- Load Children ---
+async function loadChildren() {
+    try {
+        const response = await API.get('/children/');
+        children = Array.isArray(response) ? response : response.results || [];
 
-    function updateProgress() {
-        const total = inputs.length;
-        const filled = Array.from(inputs).filter(input => {
-            if (input.type === 'radio' || input.type === 'checkbox') {
-                return input.checked;
-            }
-            return input.value.trim() !== '';
-        }).length;
-        
-        const progress = (filled / total) * 100;
-        progressBar.style.width = `${progress}%`;
-    }
+        const grid = document.getElementById('childrenGrid');
+        grid.innerHTML = '';
 
-    inputs.forEach(input => {
-        input.addEventListener('change', updateProgress);
-        input.addEventListener('input', updateProgress);
-    });
-
-    function generateReport(formData) {
-        const fileName = generateRandomFileName();
-        let reportContent = `
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <title>Child Assessment Report</title>
-                <style>
-                    body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; }
-                    .section { margin-bottom: 20px; }
-                    .section-title { color: #667eea; border-bottom: 2px solid #667eea; padding-bottom: 5px; }
-                    .field { margin: 10px 0; }
-                    .label { font-weight: bold; }
-                </style>
-            </head>
-            <body>
-                <h1>Child Assessment Report</h1>
-                <div class="section">
-        `;
-
-        // Convert form data to HTML
-        for (let [key, value] of formData.entries()) {
-            if (value) {  // Only include fields that have values
-                reportContent += `
-                    <div class="field">
-                        <span class="label">${key}:</span>
-                        <span class="value">${value}</span>
-                    </div>`;
-            }
-        }
-
-        reportContent += `
+        if (children.length === 0) {
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon"><i class="fas fa-child"></i></div>
+                    <h3 class="empty-title">No children registered yet</h3>
+                    <p class="empty-message">Register your child to get started with assessments</p>
+                    <button class="empty-action" onclick="goToIntake()">
+                        <i class="fas fa-plus"></i> Register Child
+                    </button>
                 </div>
-                <footer>
-                    <p>Generated on: ${new Date().toLocaleString()}</p>
-                </footer>
-            </body>
-            </html>`;
-
-        // Create and download the file
-        const blob = new Blob([reportContent], { type: 'text/html' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = fileName;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
-    }
-
-    function checkSectionCompletion(section) {
-        const inputs = section.querySelectorAll('input, select, textarea');
-        const required = section.querySelectorAll('[required]');
-        let isComplete = true;
-
-        required.forEach(input => {
-            if (!input.value) isComplete = false;
-        });
-
-        if (isComplete) {
-            section.classList.add('completed');
+            `;
         } else {
-            section.classList.remove('completed');
-        }
-    }
-
-    // Add completion check to each form section
-    document.querySelectorAll('.form-section').forEach(section => {
-        // Add completion indicator
-        const indicator = document.createElement('i');
-        indicator.className = 'fas fa-check-circle completion-indicator';
-        section.appendChild(indicator);
-
-        // Monitor inputs in section
-        const inputs = section.querySelectorAll('input, select, textarea');
-        inputs.forEach(input => {
-            input.addEventListener('change', () => checkSectionCompletion(section));
-            input.addEventListener('input', () => checkSectionCompletion(section));
-        });
-    });
-
-    // Character counter functionality
-    document.querySelectorAll('textarea').forEach(textarea => {
-        const counter = textarea.parentElement.querySelector('.character-count');
-        
-        if (counter) {
-            textarea.addEventListener('input', () => {
-                const remaining = textarea.maxLength - textarea.value.length;
-                counter.textContent = `${textarea.value.length}/${textarea.maxLength} characters`;
+            children.forEach(child => {
+                const card = createChildCard(child);
+                grid.appendChild(card);
             });
         }
-    });
+    } catch (error) {
+        console.error('Error loading children:', error);
+        document.getElementById('childrenGrid').innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon"><i class="fas fa-exclamation-circle"></i></div>
+                <h3 class="empty-title">Error loading children</h3>
+                <p class="empty-message">Please refresh the page or contact support</p>
+            </div>
+        `;
+    }
+}
 
-    // Suggestion chips functionality
-    document.querySelectorAll('.suggestion-chip').forEach(chip => {
-        chip.addEventListener('click', () => {
-            const textarea = chip.closest('.input-card').querySelector('textarea');
-            const chipText = chip.textContent;
-            
-            if (textarea.value) {
-                textarea.value += ', ' + chipText.toLowerCase();
-            } else {
-                textarea.value = chipText.toLowerCase();
+// --- Determine Child Status ---
+function getChildStatus(child) {
+    // Check if intake completed
+    const intakeCompleted = child.intake_status === 'completed';
+    
+    // If no intake, show "Intake needed"
+    if (!intakeCompleted) {
+        return {
+            displayStatus: 'Intake needed',
+            badgeClass: 'badge-intake-needed',
+            icon: 'fa-file-alt',
+            statusLine: 'Next step: Fill up intake form'
+        };
+    }
+
+    // After intake, check assessment status
+    const assessmentStatus = child.assessment_status || 'none';
+    
+    if (assessmentStatus === 'none' || assessmentStatus === 'for_assessment') {
+        return {
+            displayStatus: 'For assessment',
+            badgeClass: 'badge-for-assessment',
+            icon: 'fa-calendar',
+            statusLine: 'Next step: Book an assessment for your child'
+        };
+    }
+
+    if (assessmentStatus === 'scheduled') {
+        const scheduledDate = child.assessment_scheduled_date 
+            ? new Date(child.assessment_scheduled_date).toLocaleDateString() 
+            : 'TBD';
+        return {
+            displayStatus: `Assessment scheduled – ${scheduledDate}`,
+            badgeClass: 'badge-assessment-scheduled',
+            icon: 'fa-calendar-check',
+            statusLine: 'Assessment booked. Awaiting session.'
+        };
+    }
+
+    if (assessmentStatus === 'completed') {
+        const enrollmentStatus = child.enrollment_status || 'none';
+        
+        if (enrollmentStatus === 'enrolled') {
+            return {
+                displayStatus: 'Enrolled',
+                badgeClass: 'badge-enrolled',
+                icon: 'fa-check-circle',
+                statusLine: 'Child is enrolled. View assessment, IEP, and progress.'
+            };
+        }
+
+        return {
+            displayStatus: 'Assessed',
+            badgeClass: 'badge-assessed',
+            icon: 'fa-check-circle',
+            statusLine: 'Assessment completed. Ready to enroll.'
+        };
+    }
+
+    return {
+        displayStatus: 'Unknown',
+        badgeClass: 'badge-for-assessment',
+        icon: 'fa-question-circle',
+        statusLine: 'Status unknown'
+    };
+}
+
+// --- Create Child Card ---
+function createChildCard(child) {
+    const card = document.createElement('div');
+    card.className = 'child-card';
+
+    // Calculate age
+    const dob = new Date(child.date_of_birth);
+    const today = new Date();
+    let age = today.getFullYear() - dob.getFullYear();
+    const monthDiff = today.getMonth() - dob.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+        age--;
+    }
+
+    // Get status
+    const status = getChildStatus(child);
+
+    // Build action buttons based on status
+    let actionsHTML = '';
+
+    // Intake needed → Show "Fill intake" button
+    if (child.intake_status !== 'completed') {
+        actionsHTML = `
+            <button class="action-btn action-btn-primary" onclick="goToIntake('${child.id}')">
+                <i class="fas fa-file-alt"></i> Start here: Fill intake
+            </button>
+            <button class="action-btn action-btn-secondary" onclick="editChildInfo('${child.id}')">
+                <i class="fas fa-edit"></i> Edit
+            </button>
+        `;
+    }
+    // For assessment (intake completed) → Show "Book assessment" button
+    else if (!child.assessment_status || child.assessment_status === 'for_assessment') {
+        actionsHTML = `
+            <button class="action-btn action-btn-primary" onclick="goToAssessmentBooking('${child.id}')">
+                <i class="fas fa-calendar-plus"></i> Book assessment
+            </button>
+            <button class="action-btn action-btn-secondary" onclick="editChildInfo('${child.id}')">
+                <i class="fas fa-edit"></i> Edit
+            </button>
+        `;
+    }
+    // Assessment scheduled → Show "View assessment details" button
+    else if (child.assessment_status === 'scheduled') {
+        actionsHTML = `
+            <button class="action-btn action-btn-primary" onclick="goToAssessmentDetails('${child.id}')">
+                <i class="fas fa-calendar-check"></i> View assessment details
+            </button>
+            <button class="action-btn action-btn-secondary" onclick="editChildInfo('${child.id}')">
+                <i class="fas fa-edit"></i> Edit
+            </button>
+        `;
+    }
+    // Assessed (not enrolled) → Show "View assessment" and "Enroll" buttons
+    else if (child.assessment_status === 'completed' && child.enrollment_status !== 'enrolled') {
+        actionsHTML = `
+            <button class="action-btn action-btn-primary" onclick="goToAssessmentReport('${child.id}')">
+                <i class="fas fa-eye"></i> View assessment
+            </button>
+            <button class="action-btn action-btn-secondary" onclick="goToEnroll('${child.id}')">
+                <i class="fas fa-user-plus"></i> Enroll
+            </button>
+        `;
+    }
+    // Enrolled → Show "View assessment", "View IEP", "View progress" buttons
+    else if (child.enrollment_status === 'enrolled') {
+        actionsHTML = `
+            <button class="action-btn action-btn-primary" onclick="goToAssessmentReport('${child.id}')">
+                <i class="fas fa-eye"></i> View assessment
+            </button>
+            <button class="action-btn action-btn-secondary" onclick="goToIep('${child.id}')">
+                <i class="fas fa-file-alt"></i> View IEP
+            </button>
+            <button class="action-btn action-btn-secondary" onclick="goToProgress('${child.id}')">
+                <i class="fas fa-chart-line"></i> View progress
+            </button>
+        `;
+    }
+
+    card.innerHTML = `
+        <div class="child-header">
+            <div style="display: flex; align-items: flex-start; gap: 12px; flex: 1;">
+                <div class="child-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="child-meta">
+                    <h3 class="child-name">${child.first_name} ${child.last_name}</h3>
+                    <p class="child-age">${age} years old • Grade: ${child.grade_level || 'N/A'}</p>
+                </div>
+            </div>
+            <span class="child-badge ${status.badgeClass}">
+                <i class="fas ${status.icon}"></i> ${status.displayStatus}
+            </span>
+        </div>
+
+        <p class="status-line">
+            <i class="fas fa-info-circle"></i> ${status.statusLine}
+        </p>
+
+        <div class="card-actions">
+            ${actionsHTML}
+        </div>
+    `;
+
+    return card;
+}
+
+// --- Navigation Helpers ---
+function goToIntake(childId = null) {
+    const base = window.BASE_URL || '/AppAra';
+    if (childId) {
+        window.location.href = `${base}/html/parent/parent-input.html?childId=${childId}`;
+    } else {
+        window.location.href = `${base}/html/parent/parent-input.html`;
+    }
+}
+
+function goToAssessmentBooking(childId) {
+    const base = window.BASE_URL || '/AppAra';
+    window.location.href = `${base}/html/parent/parent-assessment.html?childId=${childId}#book`;
+}
+
+function goToAssessmentDetails(childId) {
+    const base = window.BASE_URL || '/AppAra';
+    window.location.href = `${base}/html/parent/parent-assessment.html?childId=${childId}#my-assessments`;
+}
+
+function goToAssessmentReport(childId) {
+    const base = window.BASE_URL || '/AppAra';
+    window.location.href = `${base}/html/parent/parent-assessment.html?childId=${childId}&view=report`;
+}
+
+function goToEnroll(childId) {
+    const base = window.BASE_URL || '/AppAra';
+    window.location.href = `${base}/html/parent/parent-enroll.html?childId=${childId}`;
+}
+
+function goToIep(childId) {
+    const base = window.BASE_URL || '/AppAra';
+    window.location.href = `${base}/html/parent/parent-progress.html?childId=${childId}#iep`;
+}
+
+function goToProgress(childId) {
+    const base = window.BASE_URL || '/AppAra';
+    window.location.href = `${base}/html/parent/parent-progress.html?childId=${childId}#weekly`;
+}
+
+function editChildInfo(childId) {
+    // Redirect to parent-input with edit=true to pre-fill saved data
+    const base = window.BASE_URL || '/AppAra';
+    window.location.href = `${base}/html/parent/parent-input.html?childId=${childId}&edit=true`;
+}
+
+// --- Logout ---
+function setupLogout() {
+    const logoutBtn = document.querySelector('.logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            if (window.Auth && typeof Auth.logout === 'function') {
+                Auth.logout();
             }
-            
-            // Trigger character counter update
-            textarea.dispatchEvent(new Event('input'));
         });
-    });
-
+    }
+}
