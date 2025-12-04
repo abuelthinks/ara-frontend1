@@ -5,6 +5,20 @@
   <title>Parent Assessment | ARA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/AppAra/css/parent-assessment.css" />
+  <style>
+    .ara-hidden { display: none; }
+    .ara-summary-box {
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      padding: 12px 16px;
+      background-color: #f8fafc;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+    .ara-summary-box p {
+      margin: 4px 0;
+    }
+  </style>
 </head>
 <body class="ara-body">
   <header class="ara-header">
@@ -67,62 +81,85 @@
           </div>
         </aside>
 
-        <!-- Right column: specialist selection -->
+        <!-- Right column: assessment panel with two states -->
         <section class="ara-panel ara-panel--form">
-          <h2 class="ara-panel__title">Choose a specialist</h2>
+          <h2 class="ara-panel__title">Assessment request</h2>
 
-          <form id="parentAssessmentForm" class="ara-form">
-            <!-- Specialist list only -->
-            <div class="ara-form__group">
-              <label class="ara-form__label">
-                Choose a specialist for this assessment
-              </label>
-              <p class="ara-helper-text">
-                These specialists are available for new assessments. Your intake form will be shared with the specialist you select.
-              </p>
-              <div id="specialistList" class="specialist-list"></div>
-            </div>
-
-            <!-- Preferred schedule -->
-            <div class="ara-form__group ara-form__group--inline">
-              <div class="ara-form__field">
-                <label for="preferredDate" class="ara-form__label">
-                  Preferred assessment date
+          <!-- State 1: booking form -->
+          <div id="bookingState">
+            <form id="parentAssessmentForm" class="ara-form">
+              <!-- Specialist list -->
+              <div class="ara-form__group">
+                <label class="ara-form__label">
+                  Choose a specialist for this assessment
                 </label>
-                <input
-                  type="date"
-                  id="preferredDate"
-                  name="preferred_date"
-                  class="ara-form__input"
-                />
+                <p class="ara-helper-text">
+                  These specialists are available for new assessments. Your intake form will be shared with the specialist you select.
+                </p>
+                <div id="specialistList" class="specialist-list"></div>
               </div>
 
-              <div class="ara-form__field">
-                <label for="preferredTime" class="ara-form__label">
-                  Preferred time
-                </label>
-                <input
-                  type="time"
-                  id="preferredTime"
-                  name="preferred_time"
-                  class="ara-form__input"
-                />
+              <!-- Preferred schedule -->
+              <div class="ara-form__group ara-form__group--inline">
+                <div class="ara-form__field">
+                  <label for="preferredDate" class="ara-form__label">
+                    Preferred assessment date
+                  </label>
+                  <input
+                    type="date"
+                    id="preferredDate"
+                    name="preferred_date"
+                    class="ara-form__input"
+                  />
+                </div>
+
+                <div class="ara-form__field">
+                  <label for="preferredTime" class="ara-form__label">
+                    Preferred time
+                  </label>
+                  <input
+                    type="time"
+                    id="preferredTime"
+                    name="preferred_time"
+                    class="ara-form__input"
+                  />
+                </div>
               </div>
+
+              <!-- Actions -->
+              <div class="ara-form__actions">
+                <a
+                  href="/AppAra/html/parent/parent-dashboard.html"
+                  class="ara-btn ara-btn--ghost"
+                >
+                  Cancel
+                </a>
+                <button type="submit" class="ara-btn ara-btn--primary">
+                  Submit assessment request
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- State 2: existing request summary -->
+          <div id="existingState" class="ara-hidden">
+            <p class="ara-helper-text">
+              You already have a pending assessment request for this child.
+            </p>
+
+            <div class="ara-summary-box">
+              <p><strong>Specialist:</strong> <span id="reqSpecialist">—</span></p>
+              <p><strong>Preferred date:</strong> <span id="reqDate">—</span></p>
+              <p><strong>Preferred time:</strong> <span id="reqTime">—</span></p>
+              <p><strong>Status:</strong> <span id="reqStatus">—</span></p>
             </div>
 
-            <!-- Actions -->
             <div class="ara-form__actions">
-              <a
-                href="/AppAra/html/parent/parent-dashboard.html"
-                class="ara-btn ara-btn--ghost"
-              >
-                Cancel
-              </a>
-              <button type="submit" class="ara-btn ara-btn--primary">
-                Submit assessment request
+              <button id="rescheduleBtn" class="ara-btn ara-btn--ghost" type="button">
+                Reschedule or change specialist
               </button>
             </div>
-          </form>
+          </div>
         </section>
       </div>
     </section>

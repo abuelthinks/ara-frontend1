@@ -14,6 +14,14 @@
   const formEl = document.getElementById("parentAssessmentForm");
   const specialistListEl = document.getElementById("specialistList");
 
+  const bookingStateEl = document.getElementById("bookingState");
+  const existingStateEl = document.getElementById("existingState");
+  const reqSpecialistEl = document.getElementById("reqSpecialist");
+  const reqDateEl = document.getElementById("reqDate");
+  const reqTimeEl = document.getElementById("reqTime");
+  const reqStatusEl = document.getElementById("reqStatus");
+  const rescheduleBtn = document.getElementById("rescheduleBtn");
+
   let selectedSpecialistId = null;
 
   function setParentName() {
@@ -75,108 +83,137 @@
   }
 
   // --------- Specialists: fetch & render cards ---------
-function buildSpecialistCard(specialist) {
-  const card = document.createElement("button");
-  card.type = "button";
-  card.className = "specialist-card";
-  card.dataset.id = specialist.user_id;
+  function buildSpecialistCard(specialist) {
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "specialist-card";
+    card.dataset.id = specialist.user_id;
 
-  const initials =
-    (specialist.full_name || "?")
-      .split(" ")
-      .filter(Boolean)
-      .map((p) => p[0].toUpperCase())
-      .join("")
-      .slice(0, 2) || "?";
+    const initials =
+      (specialist.full_name || "?")
+        .split(" ")
+        .filter(Boolean)
+        .map((p) => p[0].toUpperCase())
+        .join("")
+        .slice(0, 2) || "?";
 
-  card.innerHTML = `
-    <div class="specialist-card__avatar">${initials}</div>
-    <div class="specialist-card__content">
-      <div class="specialist-card__header">
-        <span class="specialist-card__name">${specialist.full_name}</span>
+    card.innerHTML = `
+      <div class="specialist-card__avatar">${initials}</div>
+      <div class="specialist-card__content">
+        <div class="specialist-card__header">
+          <span class="specialist-card__name">${specialist.full_name}</span>
+          ${
+            specialist.years_experience
+              ? `<span class="specialist-card__meta">${specialist.years_experience}+ yrs experience</span>`
+              : ""
+          }
+        </div>
         ${
-          specialist.years_experience
-            ? `<span class="specialist-card__meta">${specialist.years_experience}+ yrs experience</span>`
+          specialist.display_title || specialist.specialization
+            ? `<div class="specialist-card__title">
+                 ${specialist.display_title || specialist.specialization}
+               </div>`
             : ""
         }
-      </div>
-      ${
-        specialist.display_title || specialist.specialization
-          ? `<div class="specialist-card__title">
-               ${specialist.display_title || specialist.specialization}
-             </div>`
-          : ""
-      }
-      ${
-        Array.isArray(specialist.focus_areas) &&
-        specialist.focus_areas.length > 0
-          ? `<div class="specialist-card__chips">
-               ${specialist.focus_areas
-                 .slice(0, 3)
-                 .map(
-                   (tag) => `<span class="specialist-chip">${tag}</span>`
-                 )
-                 .join("")}
-             </div>`
-          : ""
-      }
-      <div class="specialist-card__status-row">
-        <span class="specialist-card__status ${
-          specialist.accepts_new_assessments === false
-            ? "specialist-card__status--full"
-            : "specialist-card__status--open"
-        }">
-          ${
+        ${
+          Array.isArray(specialist.focus_areas) &&
+          specialist.focus_areas.length > 0
+            ? `<div class="specialist-card__chips">
+                 ${specialist.focus_areas
+                   .slice(0, 3)
+                   .map((tag) => `<span class="specialist-chip">${tag}</span>`)
+                   .join("")}
+               </div>`
+            : ""
+        }
+        <div class="specialist-card__status-row">
+          <span class="specialist-card__status ${
             specialist.accepts_new_assessments === false
-              ? "Not accepting new assessments"
-              : "Accepting new assessments"
-          }
-        </span>
+              ? "specialist-card__status--full"
+              : "specialist-card__status--open"
+          }">
+            ${
+              specialist.accepts_new_assessments === false
+                ? "Not accepting new assessments"
+                : "Accepting new assessments"
+            }
+          </span>
+        </div>
       </div>
-    </div>
-  `;
+    `;
 
-  card.addEventListener("click", () => {
-    selectedSpecialistId = specialist.user_id;
-    document
-      .querySelectorAll(".specialist-card--selected")
-      .forEach((el) => el.classList.remove("specialist-card--selected"));
-    card.classList.add("specialist-card--selected");
-  });
+    card.addEventListener("click", () => {
+      selectedSpecialistId = specialist.user_id;
+      document
+        .querySelectorAll(".specialist-card--selected")
+        .forEach((el) => el.classList.remove("specialist-card--selected"));
+      card.classList.add("specialist-card--selected");
+    });
 
-  return card;
-}
-
-
-async function loadSpecialists() {
-  if (!specialistListEl) return;
-
-  specialistListEl.innerHTML =
-    `<p class="ara-helper-text">Loading specialists...</p>`;
-
-  try {
-    const resp = await API.get("/specialists/");
-    console.log("[ParentAssessment] raw specialists response:", resp);
-
-    // Handle paginated vs plain array
-    const specialists = Array.isArray(resp) ? resp : resp.results || [];
-
-    if (!Array.isArray(specialists) || specialists.length === 0) {
-      specialistListEl.innerHTML =
-        `<p class="ara-helper-text">No specialists are currently available for booking. Please contact the center.</p>`;
-      return;
-    }
-
-    specialistListEl.innerHTML = "";
-    specialists.forEach((spec) =>
-      specialistListEl.appendChild(buildSpecialistCard(spec))
-    );
-  } catch (err) {
-    console.error(err);
-    specialistListEl.innerHTML =
-      `<p class="ara-helper-text ara-helper-text--error">Could not load specialists. Please refresh the page or try again later.</p>`;
+    return card;
   }
-}
+
+  async function loadSpecialists() {
+    if (!specialistListEl) return;
+
+    specialistListEl.innerHTML =
+      `<p class="ara-helper-text">Loading specialists...</p>`;
+
+    try {
+      const resp = await API.get("/specialists/");
+      console.log("[ParentAssessment] raw specialists response:", resp);
+
+      const specialists = Array.isArray(resp) ? resp : resp.results || [];
+
+      if (!Array.isArray(specialists) || specialists.length === 0) {
+        specialistListEl.innerHTML =
+          `<p class="ara-helper-text">No specialists are currently available for booking. Please contact the center.</p>`;
+        return;
+      }
+
+      specialistListEl.innerHTML = "";
+      specialists.forEach((spec) =>
+        specialistListEl.appendChild(buildSpecialistCard(spec))
+      );
+    } catch (err) {
+      console.error(err);
+      specialistListEl.innerHTML =
+        `<p class="ara-helper-text ara-helper-text--error">Could not load specialists. Please refresh the page or try again later.</p>`;
+    }
+  }
+
+  // --------- Existing request state ---------
+  async function loadExistingRequest() {
+    const childId = getChildIdFromUrl();
+    if (!childId) return;
+
+    try {
+      const resp = await API.get(`/assessment-requests/?child=${childId}`);
+      const results = Array.isArray(resp) ? resp : resp.results || [];
+
+      if (!results.length) {
+        // No existing request: show booking form
+        bookingStateEl.classList.remove("ara-hidden");
+        existingStateEl.classList.add("ara-hidden");
+        return;
+      }
+
+      const req = results[0]; // assume latest
+
+      reqSpecialistEl.textContent = req.specialist_name || "—";
+      reqDateEl.textContent = req.preferred_date || "—";
+      reqTimeEl.textContent = req.preferred_time || "—";
+      reqStatusEl.textContent = req.status || "PENDING";
+
+      bookingStateEl.classList.add("ara-hidden");
+      existingStateEl.classList.remove("ara-hidden");
+      existingStateEl.dataset.requestId = req.request_id;
+    } catch (err) {
+      console.error("[ParentAssessment] loadExistingRequest error:", err);
+      bookingStateEl.classList.remove("ara-hidden");
+      existingStateEl.classList.add("ara-hidden");
+    }
+  }
 
   // --------- Submit handler ---------
   async function handleSubmit(event) {
@@ -202,9 +239,9 @@ async function loadSpecialists() {
     };
 
     try {
-      await API.post("/parent-assessment-requests/", payload);
-      showToast("Assessment request submitted successfully.");
-      window.location.href = "/AppAra/html/parent/parent-submitted.html";
+      await API.post("/assessment-requests/", payload);
+      alert("Assessment request submitted successfully.");
+      await loadExistingRequest();
     } catch (err) {
       console.error(err);
       showToast(
@@ -222,14 +259,26 @@ async function loadSpecialists() {
     setParentName();
     loadChild();
     loadSpecialists();
+    loadExistingRequest();
 
-    logoutBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      if (window.Auth) {
-        Auth.logout();
-      }
-    });
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (window.Auth) {
+          Auth.logout();
+        }
+      });
+    }
 
-    formEl.addEventListener("submit", handleSubmit);
+    if (formEl) {
+      formEl.addEventListener("submit", handleSubmit);
+    }
+
+    if (rescheduleBtn) {
+      rescheduleBtn.addEventListener("click", () => {
+        existingStateEl.classList.add("ara-hidden");
+        bookingStateEl.classList.remove("ara-hidden");
+      });
+    }
   });
 })();

@@ -485,3 +485,7 @@ body.ara-body {
   background-color: #fef2f2;
   color: #b91c1c;
 }
+
+.ara-hidden {
+  display: none;
+}
