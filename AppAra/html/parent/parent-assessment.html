@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Parent Assessment | ARA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/AppAra/css/parent-assessment.css" />
+</head>
+<body class="ara-body">
+  <header class="ara-header">
+    <div class="ara-header__left">
+      <img src="/AppAra/images/logo.png" alt="Ara Logo" class="ara-logo" />
+      <span class="ara-header__title">Parent Assessment</span>
+    </div>
+    <div class="ara-header__right">
+      <span id="parentName" class="ara-header__user">Welcome, Parent</span>
+      <button id="logoutBtn" class="ara-btn ara-btn--ghost">Logout</button>
+    </div>
+  </header>
+
+  <nav class="ara-nav ara-nav--tabs">
+    <a href="/AppAra/html/parent/parent-dashboard.html" class="ara-nav__link">
+      My Children
+    </a>
+    <a href="/AppAra/html/parent/parent-assessment.html" class="ara-nav__link ara-nav__link--active">
+      Assessments
+    </a>
+    <a href="/AppAra/html/parent/parent-homepage.html" class="ara-nav__link">
+      Resources
+    </a>
+    <a href="/AppAra/html/parent/parent-submitted.html" class="ara-nav__link">
+      Submitted Forms
+    </a>
+  </nav>
+
+  <main class="ara-main">
+    <section class="ara-section">
+      <header class="ara-section__header">
+        <div>
+          <h1 class="ara-section__title">Book an assessment</h1>
+          <p class="ara-section__subtitle">
+            Review your child’s details, choose a specialist, and request an assessment slot.
+          </p>
+        </div>
+        <div class="ara-section__meta">
+          <span class="ara-chip" id="childNameChip">Child: —</span>
+          <span class="ara-chip ara-chip--soft" id="gradeChip">Grade: —</span>
+        </div>
+      </header>
+
+      <div class="ara-layout">
+        <!-- Left column: child summary -->
+        <aside class="ara-panel ara-panel--summary">
+          <h2 class="ara-panel__title">Child summary</h2>
+          <div class="ara-summary">
+            <p><strong>Name:</strong> <span id="summaryName">—</span></p>
+            <p><strong>Age:</strong> <span id="summaryAge">—</span></p>
+            <p><strong>Grade:</strong> <span id="summaryGrade">—</span></p>
+            <p><strong>School:</strong> <span id="summarySchool">—</span></p>
+          </div>
+
+          <div class="ara-summary__note">
+            <p>
+              These details come from your child profile. If anything looks incorrect,
+              please update it from the dashboard before submitting this assessment.
+            </p>
+          </div>
+        </aside>
+
+        <!-- Right column: specialist selection -->
+        <section class="ara-panel ara-panel--form">
+          <h2 class="ara-panel__title">Choose a specialist</h2>
+
+          <form id="parentAssessmentForm" class="ara-form">
+            <!-- Specialist list only -->
+            <div class="ara-form__group">
+              <label class="ara-form__label">
+                Choose a specialist for this assessment
+              </label>
+              <p class="ara-helper-text">
+                These specialists are available for new assessments. Your intake form will be shared with the specialist you select.
+              </p>
+              <div id="specialistList" class="specialist-list"></div>
+            </div>
+
+            <!-- Preferred schedule -->
+            <div class="ara-form__group ara-form__group--inline">
+              <div class="ara-form__field">
+                <label for="preferredDate" class="ara-form__label">
+                  Preferred assessment date
+                </label>
+                <input
+                  type="date"
+                  id="preferredDate"
+                  name="preferred_date"
+                  class="ara-form__input"
+                />
+              </div>
+
+              <div class="ara-form__field">
+                <label for="preferredTime" class="ara-form__label">
+                  Preferred time
+                </label>
+                <input
+                  type="time"
+                  id="preferredTime"
+                  name="preferred_time"
+                  class="ara-form__input"
+                />
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="ara-form__actions">
+              <a
+                href="/AppAra/html/parent/parent-dashboard.html"
+                class="ara-btn ara-btn--ghost"
+              >
+                Cancel
+              </a>
+              <button type="submit" class="ara-btn ara-btn--primary">
+                Submit assessment request
+              </button>
+            </div>
+          </form>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ara-footer">
+    <span>© ARA – Automated Reporting Application</span>
+  </footer>
+
+  <script src="/AppAra/js/config.js"></script>
+  <script src="/AppAra/js/tokenManager.js"></script>
+  <script src="/AppAra/js/auth.js"></script>
+  <script src="/AppAra/js/api.js"></script>
+  <script src="/AppAra/js/pages/parent-assessment.js"></script>
+</body>
+</html>

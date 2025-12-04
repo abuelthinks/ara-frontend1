@@ -1,0 +1,487 @@
+/* ===== Overall page layout (match dashboard screenshot) ===== */
+
+body.ara-body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, system-ui, sans-serif;
+  background-color: #fdfdf7; /* very light warm background */
+  color: #25313c;
+}
+
+/* Top app bar */
+
+.ara-header {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  border-bottom: 1px solid #e3e7eb;
+  background-color: #fcfef9;
+}
+
+.ara-header__left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ara-logo {
+  height: 28px;
+  width: auto;
+}
+
+.ara-header__title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #243b53;
+}
+
+.ara-header__right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.9rem;
+  color: #52606d;
+}
+
+/* Logout button styled like top‑right button in screenshot */
+
+.ara-btn,
+.ara-btn--ghost,
+#logoutBtn {
+  border-radius: 999px;
+  border: 1px solid #d3dde5;
+  background-color: #ffffff;
+  color: #52606d;
+  padding: 8px 18px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+}
+
+.ara-btn--ghost:hover,
+#logoutBtn:hover {
+  background-color: #f5f7fa;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.12);
+  transform: translateY(-1px);
+}
+
+/* ===== Centered content container & tabs ===== */
+
+.ara-main {
+  max-width: 960px;
+  margin: 32px auto 40px auto;
+  padding: 0 16px;
+}
+
+/* Section card */
+
+.ara-section {
+  background-color: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  padding: 24px 28px 28px 28px;
+  box-sizing: border-box;
+}
+
+/* Tabs strip just above main card (like screenshot) */
+
+.ara-nav {
+  max-width: 960px;
+  margin: 8px auto 0 auto;
+  padding: 0 16px;
+  display: flex;
+  gap: 8px;
+}
+
+.ara-nav__link {
+  font-size: 0.9rem;
+  padding: 8px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+  color: #52606d;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.ara-nav__link:hover {
+  background-color: #f0f4f8;
+  color: #243b53;
+}
+
+.ara-nav__link--active {
+  background-color: #0f766e;
+  color: #ffffff;
+}
+
+/* ===== Section header (title + chips) ===== */
+
+.ara-section__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e3e7eb;
+  margin-bottom: 20px;
+}
+
+.ara-section__title {
+  margin: 0 0 4px 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #243b53;
+}
+
+.ara-section__subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #73819b;
+}
+
+.ara-section__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+/* Chips styled similar to dashboard badges */
+
+.ara-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  background-color: #e0f2fe;
+  color: #075985;
+}
+
+.ara-chip--soft {
+  background-color: #e5f4f1;
+  color: #166a5b;
+}
+
+/* ===== Card layout: child summary + form ===== */
+
+.ara-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 2.1fr);
+  gap: 20px;
+}
+
+/* Panels look like soft cards (similar to child tile in screenshot) */
+
+.ara-panel {
+  border-radius: 12px;
+  border: 1px solid #e3e7eb;
+  background-color: #fcfefc;
+  padding: 16px 18px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+}
+
+.ara-panel__title {
+  margin: 0 0 12px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #334e68;
+}
+
+/* Child summary text */
+
+.ara-summary p {
+  margin: 0 0 6px 0;
+  font-size: 0.9rem;
+  color: #52606d;
+}
+
+.ara-summary strong {
+  color: #243b53;
+}
+
+.ara-summary__note {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background-color: #f5fbff;
+  border-left: 3px solid #0ea5e9;
+  font-size: 0.82rem;
+  color: #64748b;
+}
+
+/* ===== Form styling (match dashboard inputs) ===== */
+
+.ara-form__group {
+  margin-bottom: 18px;
+}
+
+.ara-form__label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #334e68;
+  margin-bottom: 6px;
+}
+
+.ara-form__textarea,
+.ara-form__input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #d3dde5;
+  font-size: 0.95rem;
+  font-family: inherit;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ara-form__textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+.ara-form__textarea:focus,
+.ara-form__input:focus {
+  outline: none;
+  border-color: #0f766e;
+  box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.18);
+}
+
+/* Inline (date + time) */
+
+.ara-form__group--inline {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.ara-form__field {
+  margin: 0;
+}
+
+/* Focus areas: vertical checkboxes, similar card hover */
+
+.ara-taglist {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ara-chip--selectable {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background-color: #f5f7fa;
+  border: 1px solid #e1e7ef;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+}
+
+.ara-chip--selectable:hover {
+  background-color: #edf2f7;
+  transform: translateX(3px);
+  box-shadow: 0 2px 5px rgba(15, 23, 42, 0.06);
+}
+
+.ara-chip--selectable input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #0f766e;
+}
+
+/* ===== Actions row ===== */
+
+.ara-form__actions {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #e3e7eb;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* Primary button similar to teal Book assessment */
+
+.ara-btn--primary {
+  border-radius: 999px;
+  border: 1px solid #0f766e;
+  background-color: #0f766e;
+  color: #ffffff;
+  padding: 10px 22px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+}
+
+.ara-btn--primary:hover {
+  background-color: #115e59;
+  box-shadow: 0 3px 8px rgba(15, 118, 110, 0.35);
+  transform: translateY(-1px);
+}
+
+/* Footer */
+
+.ara-footer {
+  max-width: 960px;
+  margin: 0 auto 20px auto;
+  padding: 8px 16px 0 16px;
+  font-size: 0.8rem;
+  color: #9aa5b1;
+  text-align: center;
+}
+
+/* ===== Responsive ===== */
+
+@media (max-width: 900px) {
+  .ara-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .ara-header {
+    padding: 0 16px;
+  }
+
+  .ara-section {
+    padding: 20px 18px 22px 18px;
+  }
+
+  .ara-section__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ara-section__meta {
+    align-items: flex-start;
+  }
+
+  .ara-form__group--inline {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.specialist-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.specialist-card {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #e3e7eb;
+  background-color: #f9fafb;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease,
+    transform 0.1s ease, border-color 0.15s ease;
+}
+
+.specialist-card:hover {
+  background-color: #f3f6fb;
+  box-shadow: 0 3px 8px rgba(15, 23, 42, 0.08);
+  transform: translateY(-1px);
+}
+
+.specialist-card--selected {
+  border-color: #0f766e;
+  box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.25);
+  background-color: #ecfdf5;
+}
+
+.specialist-card__avatar {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background-color: #0f766e;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.specialist-card__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.specialist-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.specialist-card__name {
+  font-weight: 600;
+  color: #243b53;
+  font-size: 0.95rem;
+}
+
+.specialist-card__meta {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.specialist-card__title {
+  font-size: 0.85rem;
+  color: #0f766e;
+}
+
+.specialist-card__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.specialist-chip {
+  padding: 3px 8px;
+  border-radius: 999px;
+  background-color: #e0f2fe;
+  color: #075985;
+  font-size: 0.75rem;
+}
+
+.specialist-card__status-row {
+  margin-top: 2px;
+}
+
+.specialist-card__status {
+  font-size: 0.78rem;
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
+.specialist-card__status--open {
+  background-color: #ecfdf3;
+  color: #166534;
+}
+
+.specialist-card__status--full {
+  background-color: #fef2f2;
+  color: #b91c1c;
+}

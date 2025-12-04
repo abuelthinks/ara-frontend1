@@ -151,10 +151,10 @@ function createChildCard(child) {
     // Intake needed → Show "Fill intake" button
     if (child.intake_status !== 'completed') {
         actionsHTML = `
-            <button class="action-btn action-btn-primary" onclick="goToIntake('${child.id}')">
+            <button class="action-btn action-btn-primary" onclick="goToIntake('${child.child_id}')">
                 <i class="fas fa-file-alt"></i> Start here: Fill intake
             </button>
-            <button class="action-btn action-btn-secondary" onclick="editChildInfo('${child.id}')">
+            <button class="action-btn action-btn-secondary" onclick="editChildInfo('${child.child_id}')">
                 <i class="fas fa-edit"></i> Edit
             </button>
         `;
@@ -162,10 +162,10 @@ function createChildCard(child) {
     // For assessment (intake completed) → Show "Book assessment" button
     else if (!child.assessment_status || child.assessment_status === 'for_assessment') {
         actionsHTML = `
-            <button class="action-btn action-btn-primary" onclick="goToAssessmentBooking('${child.id}')">
+            <button class="action-btn action-btn-primary" onclick="goToAssessmentBooking('${child.child_id}')">
                 <i class="fas fa-calendar-plus"></i> Book assessment
             </button>
-            <button class="action-btn action-btn-secondary" onclick="editChildInfo('${child.id}')">
+            <button class="action-btn action-btn-secondary" onclick="editChildInfo('${child.child_id}')">
                 <i class="fas fa-edit"></i> Edit
             </button>
         `;
@@ -173,10 +173,10 @@ function createChildCard(child) {
     // Assessment scheduled → Show "View assessment details" button
     else if (child.assessment_status === 'scheduled') {
         actionsHTML = `
-            <button class="action-btn action-btn-primary" onclick="goToAssessmentDetails('${child.id}')">
+            <button class="action-btn action-btn-primary" onclick="goToAssessmentDetails('${child.child_id}')">
                 <i class="fas fa-calendar-check"></i> View assessment details
             </button>
-            <button class="action-btn action-btn-secondary" onclick="editChildInfo('${child.id}')">
+            <button class="action-btn action-btn-secondary" onclick="editChildInfo('${child.child_id}')">
                 <i class="fas fa-edit"></i> Edit
             </button>
         `;
@@ -184,10 +184,10 @@ function createChildCard(child) {
     // Assessed (not enrolled) → Show "View assessment" and "Enroll" buttons
     else if (child.assessment_status === 'completed' && child.enrollment_status !== 'enrolled') {
         actionsHTML = `
-            <button class="action-btn action-btn-primary" onclick="goToAssessmentReport('${child.id}')">
+            <button class="action-btn action-btn-primary" onclick="goToAssessmentReport('${child.child_id}')">
                 <i class="fas fa-eye"></i> View assessment
             </button>
-            <button class="action-btn action-btn-secondary" onclick="goToEnroll('${child.id}')">
+            <button class="action-btn action-btn-secondary" onclick="goToEnroll('${child.child_id}')">
                 <i class="fas fa-user-plus"></i> Enroll
             </button>
         `;
@@ -195,13 +195,13 @@ function createChildCard(child) {
     // Enrolled → Show "View assessment", "View IEP", "View progress" buttons
     else if (child.enrollment_status === 'enrolled') {
         actionsHTML = `
-            <button class="action-btn action-btn-primary" onclick="goToAssessmentReport('${child.id}')">
+            <button class="action-btn action-btn-primary" onclick="goToAssessmentReport('${child.child_id}')">
                 <i class="fas fa-eye"></i> View assessment
             </button>
-            <button class="action-btn action-btn-secondary" onclick="goToIep('${child.id}')">
+            <button class="action-btn action-btn-secondary" onclick="goToIep('${child.child_id}')">
                 <i class="fas fa-file-alt"></i> View IEP
             </button>
-            <button class="action-btn action-btn-secondary" onclick="goToProgress('${child.id}')">
+            <button class="action-btn action-btn-secondary" onclick="goToProgress('${child.child_id}')">
                 <i class="fas fa-chart-line"></i> View progress
             </button>
         `;
@@ -276,7 +276,6 @@ function goToProgress(childId) {
 }
 
 function editChildInfo(childId) {
-    // Redirect to parent-input with edit=true to pre-fill saved data
     const base = window.BASE_URL || '/AppAra';
     window.location.href = `${base}/html/parent/parent-input.html?childId=${childId}&edit=true`;
 }
