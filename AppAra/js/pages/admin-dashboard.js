@@ -45,7 +45,7 @@ function navigateTo(page) {
             window.location.href = `${base}/html/weekly-progress.html?action=list`;
             break;
         case 'iep-generation':
-            window.location.href = `${base}/html/iep-generation.html`;
+            window.location.href = `${base}/html/admin/iep-generation.html`;
             break;
     }
 }

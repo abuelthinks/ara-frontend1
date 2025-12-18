@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin · Assessment Requests</title>
+  <link rel="stylesheet" href="../../css/admin-assessment-requests.css" />
+</head>
+<body class="page">
+  <header class="topbar">
+    <div class="topbar-left">
+      <img src="../../images/AraLogo.png" alt="Ara Logo" class="logo" />
+      <span class="topbar-title">Admin · Assessment Requests</span>
+    </div>
+    <div class="topbar-right">
+      <a href="admin-dashboard.html" class="topbar-link">Dashboard</a>
+      <button class="topbar-avatar">AD</button>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <h1 class="card-title">Assessment requests</h1>
+          <p class="card-subtitle">
+            Review pending assessment requests from parents and approve or reject them.
+          </p>
+        </div>
+        <div class="filters">
+          <label class="filter-label">
+            Status
+            <select id="filter-status" class="select">
+              <option value="PENDING">Pending</option>
+              <option value="APPROVED">Approved</option>
+              <option value="REJECTED">Rejected</option>
+              <option value="ALL">All</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Child</th>
+              <th>Parent</th>
+              <th>Specialist</th>
+              <th>Preferred date</th>
+              <th>Status</th>
+              <th style="width: 180px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="requests-tbody">
+            <!-- Filled by JS -->
+          </tbody>
+        </table>
+        <div id="empty-state" class="empty-state" hidden>
+          No assessment requests found for this status.
+        </div>
+      </div>
+    </section>
+
+    <section id="detail-panel" class="detail" hidden>
+      <div class="detail-header">
+        <h2 class="detail-title">Request details</h2>
+        <button id="detail-close" class="btn-ghost">Close</button>
+      </div>
+      <div class="detail-body">
+        <dl class="detail-grid">
+          <div>
+            <dt>Child</dt>
+            <dd id="detail-child"></dd>
+          </div>
+          <div>
+            <dt>Parent</dt>
+            <dd id="detail-parent"></dd>
+          </div>
+          <div>
+            <dt>Grade</dt>
+            <dd id="detail-grade"></dd>
+          </div>
+          <div>
+            <dt>Specialist</dt>
+            <dd id="detail-specialist"></dd>
+          </div>
+          <div>
+            <dt>Preferred date</dt>
+            <dd id="detail-date"></dd>
+          </div>
+          <div>
+            <dt>Preferred time</dt>
+            <dd id="detail-time"></dd>
+          </div>
+          <div class="detail-full">
+            <dt>Notes from parent</dt>
+            <dd id="detail-notes"></dd>
+          </div>
+        </dl>
+      </div>
+      <div class="detail-footer">
+        <button id="btn-reject" class="btn-outline">Reject</button>
+        <button id="btn-approve" class="btn-primary">Approve request</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="../../js/pages/admin-assessment-request.js"></script>
+</body>
+</html>
