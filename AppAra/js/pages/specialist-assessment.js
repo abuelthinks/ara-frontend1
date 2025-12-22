@@ -544,7 +544,7 @@ function startAssessment(childId, childName) {
         childName
     );
 
-    window.location.href = `${BASE_URL}/html/specialist-assessment-form.html?child_id=${childId}`;
+    window.location.href = `${BASE_URL}/html/specialist/specialist-assessment-form.html?child_id=${childId}`;
 }
 
 /**

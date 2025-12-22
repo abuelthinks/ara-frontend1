@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Specialist Assessment - Ara</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="../css/specialist-assessment-form.css">
+    <link rel="stylesheet" href="../../css/specialist-assessment-form.css">
 </head>
 <body>
     <header class="main-header">
         <div class="logo-container">
             <a href="specialist-dashboard.html">
-                <img src="../images/AraLogo.png" alt="Ara Logo">
+                <img src="../../images/AraLogo.png" alt="Ara Logo">
             </a>
         </div>  
         <div class="header-right">
@@ -19,7 +19,7 @@
                 <i class="fas fa-user"></i>
                 specialist@gg.com
             </div>
-            <button class="logout-btn" onclick="window.location.href='login.html'">
+            <button class="logout-btn" onclick="Auth.logout()">
                 Logout
             </button>
         </div>
@@ -646,11 +646,12 @@
         </div>
     </main>
 
-    <!-- Shared config + API + auth utilities -->
-    <script src="../../js/database%20js/config.js"></script>
-    <script type="module" src="../../js/database%20js/auth.js"></script>
-    <script type="module" src="../../js/database%20js/api.js"></script>
-
+    <!-- Scripts -->
+    <script src="../../js/config.js"></script>
+    <script src="../../js/auth.js"></script>
+    <script src="../../js/api.js"></script>
+    <script src="../../js/storage.js"></script>
+    <script src="../../js/tokenManager.js"></script>
     <script src="../../js/pages/specialist-assessment-form.js"></script>
 </body>
 </html>

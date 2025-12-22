@@ -33,16 +33,16 @@ function navigateTo(page) {
     const base = window.BASE_URL || '';
     switch (page) {
         case 'students-enrolled':
-            window.location.href = `${base}/html/students-enrolled.html`;
+            window.location.href = `${base}/html/admin/students-enrolled.html`;
             break;
         case 'students-assessment':
-            window.location.href = `${base}/html/assessment-generator.html`;
+            window.location.href = `${base}/html/admin/assessment-generator.html`;
             break;
         case 'students-assessed':
-            window.location.href = `${base}/html/students-assessed.html`;
+            window.location.href = `${base}/html/admin/students-assessed.html`;
             break;
         case 'weekly-progress':
-            window.location.href = `${base}/html/weekly-progress.html?action=list`;
+            window.location.href = `${base}/html/admin/weekly-progress.html?action=list`;
             break;
         case 'iep-generation':
             window.location.href = `${base}/html/admin/iep-generation.html`;
