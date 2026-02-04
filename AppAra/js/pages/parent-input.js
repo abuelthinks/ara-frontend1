@@ -86,6 +86,18 @@ function preFillFormFields(data) {
     });
 
     console.log('[ParentInput] All form fields pre-filled');
+
+    // Special mapping from backend: parent_guardian_name → split into first/last
+    if (data.parent_guardian_name) {
+        const full = String(data.parent_guardian_name).trim();
+        const parts = full.split(/\s+/);
+        const first = parts.shift() || '';
+        const last = parts.join(' ');
+        const firstInput = document.querySelector('input#parentFirstName');
+        const lastInput = document.querySelector('input#parentLastName');
+        if (firstInput && !firstInput.value) firstInput.value = first;
+        if (lastInput && !lastInput.value) lastInput.value = last;
+    }
 }
 
 
@@ -104,12 +116,14 @@ window.onload = async function() {
 
     const user = Auth.getCurrentUser();
     if (user) {
-        document.getElementById('parentEmail').textContent = user.email;
-        // Pre-fill parent email
-        const emailInput = document.getElementById('parentEmail');
-        if (emailInput && emailInput.tagName === 'INPUT') {
-            emailInput.value = user.email;
-        }
+        const headerEmail = document.querySelector('span#parentEmail');
+        if (headerEmail) headerEmail.textContent = user.email;
+        const emailInput = document.querySelector('input#parentEmail');
+        if (emailInput) emailInput.value = user.email;
+        const firstInput = document.querySelector('input#parentFirstName');
+        const lastInput = document.querySelector('input#parentLastName');
+        if (firstInput && !firstInput.value && user.first_name) firstInput.value = user.first_name;
+        if (lastInput && !lastInput.value && user.last_name) lastInput.value = user.last_name;
     }
 
     setupLogout();
@@ -292,12 +306,21 @@ async function handleSectionSubmit(e) {
         if (isEditMode && currentParentInputId) {
             // UPDATE existing ParentInput
             console.log('[Submit] Updating existing ParentInput ID:', currentParentInputId);
-            response = await API.patch(`/parent-inputs/${currentParentInputId}/`, formData);
+            const payload = {
+                ...formData,
+                parent_guardian_name: [formData.parentFirstName || '', formData.parentLastName || ''].join(' ').trim() || undefined,
+                parent_email: formData.parentEmail,
+                parent_phone: formData.parentPhone,
+            };
+            response = await API.patch(`/parent-inputs/${currentParentInputId}/`, payload);
         } else {
             // CREATE new ParentInput
             const payload = {
                 ...formData,
-                child: childId // Include childId if available
+                child: childId, // Include childId if available
+                parent_guardian_name: [formData.parentFirstName || '', formData.parentLastName || ''].join(' ').trim() || undefined,
+                parent_email: formData.parentEmail,
+                parent_phone: formData.parentPhone,
             };
             console.log('[Submit] Creating new ParentInput with payload:', payload);
             response = await API.post('/parent-inputs/', payload);
@@ -308,6 +331,7 @@ async function handleSectionSubmit(e) {
             
             // Mark first login as complete
             localStorage.setItem('parentIsFirstLogin', 'false');
+            localStorage.setItem('parentFirstLoginComplete', 'true');
             
             // Clear saved draft - no longer needed
             localStorage.removeItem('parentInputDraft');

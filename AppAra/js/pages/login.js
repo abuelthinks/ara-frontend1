@@ -88,13 +88,19 @@ async function handleLoginSubmit(event) {
 // --- Smart Parent Redirect ---
 async function redirectParent(user) {
     const base = window.BASE_URL || '/AppAra';
+    const needsIntake = localStorage.getItem('parentIsFirstLogin') === 'true';
     
-    console.log('[Redirect] Parent login, sending to parent-dashboard.html');
-    
-    // All parents go straight to dashboard
-    setTimeout(() => {
-        window.location.href = `${base}/html/parent/parent-dashboard.html`;
-    }, 500);
+    if (needsIntake) {
+        console.log('[Redirect] Parent login, sending to parent-input.html (first login)');
+        setTimeout(() => {
+            window.location.href = `${base}/html/parent/parent-input.html`;
+        }, 500);
+    } else {
+        console.log('[Redirect] Parent login, sending to parent-dashboard.html');
+        setTimeout(() => {
+            window.location.href = `${base}/html/parent/parent-dashboard.html`;
+        }, 500);
+    }
 }
 
 

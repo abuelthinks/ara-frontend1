@@ -3,44 +3,13 @@
  * Registers new parent account and redirects to parent-input.html
  */
 
-// Password requirements validation
-function validatePassword(password) {
-    return {
-        length: password.length >= 8,
-        uppercase: /[A-Z]/.test(password),
-        lowercase: /[a-z]/.test(password),
-        number: /[0-9]/.test(password)
-    };
-}
-
-function isPasswordValid(password) {
-    const req = validatePassword(password);
-    return req.length && req.uppercase && req.lowercase && req.number;
-}
-
-function updatePasswordRequirements(password) {
-    const req = validatePassword(password);
-    const requirements = {
-        'req-length': req.length,
-        'req-uppercase': req.uppercase,
-        'req-lowercase': req.lowercase,
-        'req-number': req.number
-    };
-
-    document.getElementById('passwordRequirements').classList.add('show');
-
-    Object.entries(requirements).forEach(([id, isMet]) => {
-        const element = document.getElementById(id);
-        if (isMet) {
-            element.classList.remove('unmet');
-            element.classList.add('met');
-            element.innerHTML = '<i class="fas fa-check"></i>';
-        } else {
-            element.classList.remove('met');
-            element.classList.add('unmet');
-            element.innerHTML = '<i class="fas fa-circle"></i>';
-        }
-    });
+function generatePassword(len = 12) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let out = '';
+    for (let i = 0; i < len; i++) {
+        out += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return out;
 }
 
 function clearError(fieldId) {
@@ -59,90 +28,120 @@ function showError(fieldId, message) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-    const passwordInput = document.getElementById('password');
-    const confirmPasswordInput = document.getElementById('confirmPassword');
-    const togglePassword = document.getElementById('togglePassword');
-    const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
     const form = document.getElementById('signupForm');
 
-    // Password visibility toggle
-    togglePassword.addEventListener('click', (e) => {
-        e.preventDefault();
-        const isHidden = passwordInput.type === 'password';
-        passwordInput.type = isHidden ? 'text' : 'password';
-        togglePassword.innerHTML = isHidden ? '<i class="fas fa-eye-slash"></i>' : '<i class="fas fa-eye"></i>';
-    });
+    const usernameInput = document.getElementById('username');
+    const firstNameInput = document.getElementById('firstName');
+    const lastNameInput = document.getElementById('lastName');
+    const emailInput = document.getElementById('email');
+    const resendBtn = document.getElementById('resendBtn');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
 
-    toggleConfirmPassword.addEventListener('click', (e) => {
-        e.preventDefault();
-        const isHidden = confirmPasswordInput.type === 'password';
-        confirmPasswordInput.type = isHidden ? 'text' : 'password';
-        toggleConfirmPassword.innerHTML = isHidden ? '<i class="fas fa-eye-slash"></i>' : '<i class="fas fa-eye"></i>';
-    });
+    if (usernameInput) {
+        usernameInput.addEventListener('blur', function() {
+            // optional, only validate if provided
+            if (this.value && this.value.trim().length < 2) {
+                showError('username', 'Username must be at least 2 characters');
+            } else {
+                clearError('username');
+            }
+        });
+    }
 
-    // Real-time password validation
-    passwordInput.addEventListener('input', (e) => {
-        clearError('password');
-        updatePasswordRequirements(e.target.value);
-    });
+    if (firstNameInput) {
+        firstNameInput.addEventListener('blur', function() {
+            // optional, no strict validation
+            clearError('firstName');
+        });
+    }
 
-    confirmPasswordInput.addEventListener('input', () => {
-        clearError('confirmPassword');
-    });
+    if (lastNameInput) {
+        lastNameInput.addEventListener('blur', function() {
+            // optional, no strict validation
+            clearError('lastName');
+        });
+    }
 
-    // Input validation on blur
-    document.getElementById('parentName').addEventListener('blur', function() {
-        if (!this.value.trim()) {
-            showError('parentName', 'Please enter your full name');
-        } else if (this.value.trim().length < 2) {
-            showError('parentName', 'Name must be at least 2 characters');
-        } else {
-            clearError('parentName');
-        }
-    });
+    if (emailInput) {
+        emailInput.addEventListener('blur', function() {
+            if (!this.value.trim()) {
+                showError('email', 'Please enter your email');
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value)) {
+                showError('email', 'Please enter a valid email address');
+            } else {
+                clearError('email');
+            }
+        });
+    }
 
-    document.getElementById('email').addEventListener('blur', function() {
-        if (!this.value.trim()) {
-            showError('email', 'Please enter your email');
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value)) {
-            showError('email', 'Please enter a valid email address');
-        } else {
-            clearError('email');
-        }
-    });
+    if (resendBtn) {
+        resendBtn.addEventListener('click', () => {
+            alert('Resent! For demo, you can proceed to login.');
+        });
+    }
 
-    document.getElementById('mobile').addEventListener('blur', function() {
-        if (!this.value.trim()) {
-            showError('mobile', 'Please enter your mobile number');
-        } else if (this.value.trim().length < 10) {
-            showError('mobile', 'Please enter a valid mobile number');
-        } else {
-            clearError('mobile');
-        }
-    });
+    if (passwordInput) {
+        passwordInput.addEventListener('blur', function() {
+            const val = this.value || '';
+            const okLen = val.length >= 8;
+            const hasUpper = /[A-Z]/.test(val);
+            const hasLower = /[a-z]/.test(val);
+            const hasDigit = /[0-9]/.test(val);
+            if (!okLen || !hasUpper || !hasLower || !hasDigit) {
+                showError('password', 'Use 8+ chars with A-Z, a-z and 0-9');
+            } else {
+                clearError('password');
+            }
+        });
+    }
+
+    if (confirmPasswordInput) {
+        confirmPasswordInput.addEventListener('blur', function() {
+            const val = this.value || '';
+            const pwd = passwordInput ? passwordInput.value : '';
+            if (!val || val !== pwd) {
+                showError('confirmPassword', 'Passwords do not match');
+            } else {
+                clearError('confirmPassword');
+            }
+        });
+    }
 });
 
 async function handleSignup(event) {
     event.preventDefault();
 
-    const parentName = document.getElementById('parentName').value.trim();
+    const username = document.getElementById('username').value.trim();
+    const firstName = document.getElementById('firstName').value.trim();
+    const lastName = document.getElementById('lastName').value.trim();
     const email = document.getElementById('email').value.trim();
-    const mobile = document.getElementById('mobile').value.trim();
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
     const submitBtn = document.getElementById('submitBtn');
     const successMessage = document.getElementById('successMessage');
+    const errorBanner = document.getElementById('errorBanner');
 
     // Clear all errors
-    ['parentName', 'email', 'mobile', 'password', 'confirmPassword'].forEach(id => {
+    ['username', 'firstName', 'lastName', 'email', 'password', 'confirmPassword'].forEach(id => {
         clearError(id);
     });
+    if (errorBanner) {
+        errorBanner.classList.remove('show');
+        errorBanner.textContent = '';
+        errorBanner.style.display = 'none';
+    }
 
     // Validate
     let hasError = false;
 
-    if (!parentName || parentName.length < 2) {
-        showError('parentName', 'Please enter your full name (at least 2 characters)');
+    // Require at least one of first or last name
+    if (!firstName) {
+        showError('firstName', 'First name is required');
+        hasError = true;
+    }
+    if (!lastName) {
+        showError('lastName', 'Last name is required');
         hasError = true;
     }
 
@@ -150,18 +149,15 @@ async function handleSignup(event) {
         showError('email', 'Please enter a valid email address');
         hasError = true;
     }
-
-    if (!mobile || mobile.length < 10) {
-        showError('mobile', 'Please enter a valid mobile number');
+    const okLen = password.length >= 8;
+    const hasUpper = /[A-Z]/.test(password);
+    const hasLower = /[a-z]/.test(password);
+    const hasDigit = /[0-9]/.test(password);
+    if (!okLen || !hasUpper || !hasLower || !hasDigit) {
+        showError('password', 'Use 8+ chars with A-Z, a-z and 0-9');
         hasError = true;
     }
-
-    if (!isPasswordValid(password)) {
-        showError('password', 'Password does not meet requirements');
-        hasError = true;
-    }
-
-    if (password !== confirmPassword) {
+    if (!confirmPassword || confirmPassword !== password) {
         showError('confirmPassword', 'Passwords do not match');
         hasError = true;
     }
@@ -171,45 +167,47 @@ async function handleSignup(event) {
     // Show loading state
     submitBtn.disabled = true;
     const originalText = submitBtn.textContent;
-    submitBtn.innerHTML = '<span class="loading-spinner"></span>';
+    submitBtn.innerHTML = '<span class="loading-spinner" aria-hidden="true"></span><span>Creating...</span>';
 
     try {
         // Call signup endpoint using API wrapper
+        // Derive username if blank from first+last (no spaces, lowercased)
+        const derivedUsername = (username || (firstName + lastName)).replace(/\s+/g, '').toLowerCase();
         const response = await API.post(CONFIG.ENDPOINTS.AUTH_REGISTER, {
             email: email,
-            first_name: parentName,
-            phone: mobile,
+            username: derivedUsername,
+            first_name: firstName,
+            last_name: lastName,
+            phone: '',
             password: password,
             confirm_password: confirmPassword
         });
 
         if (response && response.access && response.refresh && response.user) {
-            // Store token using Auth helper
-            Auth.setToken(response.access, response.refresh, response.user);
-            
             // Mark as first login
             localStorage.setItem('parentIsFirstLogin', 'true');
             
-            // Show success message
-            successMessage.textContent = 'Account created successfully! Redirecting...';
-            successMessage.classList.add('show');
+            // Show confirmation screen
+            const confirmationScreen = document.getElementById('confirmationScreen');
+            const formEl = document.getElementById('signupForm');
+            if (formEl) formEl.style.display = 'none';
+            if (confirmationScreen) confirmationScreen.style.display = 'block';
 
-            // Redirect to parent-input.html (Step 1)
-            setTimeout(() => {
-                const base = window.BASE_URL || '/AppAra';
-                window.location.href = `${base}/html/parent/parent-input.html`;
-            }, 1500);
+            // Stay on confirmation page; user uses the link to go to login
         }
 
     } catch (error) {
         console.error('Signup error:', error);
-        const errorMsg = error.message || 'Failed to create account. Please try again.';
-        
-        // Try to identify which field the error is about
-        if (errorMsg.includes('email') || errorMsg.includes('already')) {
-            showError('email', 'This email is already registered. Please use a different one.');
-        } else if (errorMsg.includes('password')) {
-            showError('password', errorMsg);
+        const rawMsg = error && error.message ? error.message : '';
+        const isNetwork = rawMsg.toLowerCase().includes('failed to fetch') || rawMsg.toLowerCase().includes('network');
+        const errorMsg = isNetwork 
+            ? 'Unable to reach the server. If you opened this page from a file path, please run the frontend on http://localhost:8001 and ensure the backend is reachable.'
+            : (rawMsg || 'Failed to create account. Please try again.');
+
+        if (errorBanner) {
+            errorBanner.textContent = errorMsg;
+            errorBanner.classList.add('show');
+            errorBanner.style.display = 'block';
         } else {
             showError('email', errorMsg);
         }

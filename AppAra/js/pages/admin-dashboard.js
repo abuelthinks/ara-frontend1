@@ -36,7 +36,7 @@ function navigateTo(page) {
             window.location.href = `${base}/html/admin/students-enrolled.html`;
             break;
         case 'students-assessment':
-            window.location.href = `${base}/html/admin/assessment-generator.html`;
+            window.location.href = `${base}/html/admin/admin-assessment-requests.html`;
             break;
         case 'students-assessed':
             window.location.href = `${base}/html/admin/students-assessed.html`;

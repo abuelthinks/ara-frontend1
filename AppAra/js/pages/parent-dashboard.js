@@ -12,6 +12,14 @@ window.onload = async function() {
         const ok = Auth.requireRole('PARENT');
         if (!ok) return;
     }
+    
+    const needsIntake = localStorage.getItem('parentIsFirstLogin') === 'true';
+    if (needsIntake) {
+        const base = window.BASE_URL || '/AppAra';
+        console.log('[Guard] First login not completed, redirecting to parent-input.html');
+        window.location.href = `${base}/html/parent/parent-input.html`;
+        return;
+    }
 
     currentUser = Auth.getCurrentUser();
     if (currentUser) {
